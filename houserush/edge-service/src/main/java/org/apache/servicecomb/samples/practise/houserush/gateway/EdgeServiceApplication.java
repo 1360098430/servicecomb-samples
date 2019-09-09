@@ -28,7 +28,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableServiceComb
-@EnableZipkinTracing
+//@EnableZipkinTracing
 public class EdgeServiceApplication {
   public static void main(String[] args) {
     configBeforeBoot();

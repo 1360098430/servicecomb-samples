@@ -81,33 +81,57 @@ public class UserCenterRestApiImpl implements UserCenterApi {
     houseDetail.setHouseName(house.getName());//名称
     houseDetail.setPrice(house.getPrice());//价格
     houseDetail.setBuilDingName(house.getBuilding().getName());//楼栋名称
-    houseDetail.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
+    Realestate realestate = house.getBuilding().getRealestate();
+
+    houseDetail.setRealestateName(realestate.getName());//楼盘名称
     houseDetail.setHouseOrderId(id);
+
+    houseDetail.setAddress(realestate.getAddress());//地址
+    houseDetail.setType(realestate.getType());//直接存在汉字 (住宅)
+    houseDetail.setAvgprice(realestate.getAvgprice());//均价
+    houseDetail.setUseyear(realestate.getUseyear());//产权年限
+    houseDetail.setUsernum(realestate.getUsernum());//规划户数
+    houseDetail.setArea(realestate.getArea());//占地面积
+    houseDetail.setBuildname(realestate.getBuildname());////建筑类型
+
     HouseOrder houseOrder = houseOrderApi.findOne(id);
     houseDetail.setState(houseOrder.getState());//订单状态
     return  houseDetail;
   }
 
   /**
-   * 我的购房资格
+   * 我的订单状态
    * @param customerId
    * @return
    */
-  @GetMapping("buyHouseNumber")
-  public Customer findMyBuyHouseNumber(@RequestHeader int customerId){
-    Customer customer =customerManageApi.findCustomer(customerId);
-    List<Qualification> qualifications = customer.getQualifications();
-    qualifications.forEach(qualification ->{
-      //房屋
-      House house = realestateApi.findHouse(qualification.getHouseId());
-      qualification.setHouseName(house.getName());//名称
-      qualification.setPrice(house.getPrice());//价格
-      qualification.setBuilDingName(house.getBuilding().getName());//楼栋名称
-      qualification.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
-      //根据访问查看订单状态
-      HouseOrder houseOrder = houseOrderApi.findOne(qualification.getHouseId());
-      qualification.setState(houseOrder.getState());
+  @GetMapping("buyHouseOrderState")
+  public  List<HouseOrder>  findMyBuyHouseNumber(@RequestHeader int customerId){
+    //我的订单状态
+    List<HouseOrder>  houseOrder = houseOrderApi.findAllByCustomerId(customerId);
+
+    houseOrder.forEach(order ->{
+      Integer houseId = order.getHouseId();
+      House house = realestateApi.findHouse(houseId);
+      order.setHouseName(house.getName());//名称
+      order.setPrice(house.getPrice());//价格
+      order.setBuilDingName(house.getBuilding().getName());//楼栋名称
+      order.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
+
     });
-    return customer;
+
+//    Customer customer =customerManageApi.findCustomer(customerId);
+//    List<Qualification> qualifications = customer.getQualifications();
+//    qualifications.forEach(qualification ->{
+//      //房屋
+//      House house = realestateApi.findHouse(qualification.getHouseId());
+//      qualification.setHouseName(house.getName());//名称
+//      qualification.setPrice(house.getPrice());//价格
+//      qualification.setBuilDingName(house.getBuilding().getName());//楼栋名称
+//      qualification.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
+//      //根据访问查看订单状态
+//      HouseOrder houseOrder = houseOrderApi.findOne(qualification.getHouseId());
+//      qualification.setState(houseOrder.getState());
+//    });
+    return houseOrder;
   }
 }

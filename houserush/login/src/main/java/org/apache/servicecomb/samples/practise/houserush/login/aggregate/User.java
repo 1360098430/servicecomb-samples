@@ -23,6 +23,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -38,7 +40,8 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "update users set deleted_at = now() where id = ?")

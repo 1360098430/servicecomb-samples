@@ -19,6 +19,7 @@ package org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,4 +44,12 @@ public class HouseOrder {
   private Date CreatedAt;
 
   private Date UpdatedAt;
+
+  private String houseName;
+
+  private BigDecimal price;
+
+  private String builDingName;
+
+  private String realestateName;
 }

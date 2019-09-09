@@ -73,9 +73,18 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @PostMapping("sales")
   public Sale createSale(@RequestBody Sale sale) {
-    return houseOrderService.createSale(sale);
+    List<HouseOrder> houseOrders =sale.getHouseOrders();
+    sale.setHouseOrders(null);
+    Sale saleTemp = houseOrderService.createSale(sale);
+    houseOrders.forEach(houseOrder -> {
+      Sale s = new Sale();
+      s.setId(saleTemp.getId());
+      houseOrder.setSale(s);
+    });
+    List<HouseOrder>  houseOrders1= houseOrderService.saveHousder(houseOrders);
+    saleTemp.setHouseOrders(houseOrders1);
+    return saleTemp;
   }
-
   @Override
   @GetMapping("sales/{saleId}")
   public Sale findSale(@PathVariable int saleId) {
@@ -151,6 +160,10 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @GetMapping("sales/indexAllSales")
   public List<Sale> indexAllSales() {
     List<Sale>  saleList= houseOrderService.indexSales();
+      saleList.forEach(sale -> {
+        Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
+        sale.setRealestateName(realestate.getName());
+      });
     return saleList;
   }
 
@@ -225,6 +238,8 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
       houseOrders.forEach(houseOrder ->{
         //房屋
         House house = realestateApi.findHouse(houseOrder.getHouseId());
+        Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
+        houseOrder.setRealestateName(realestate.getName());
         houseOrder.setHouseName(house.getName());//名称
         houseOrder.setPrice(house.getPrice());//价格
         houseOrder.setBuilDingName(house.getBuilding().getName());//楼栋名称
@@ -233,17 +248,13 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     return saleList;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //查询我的订单状态
+  @GetMapping("sales/findAllByCustomerId")
+  public List<HouseOrder> findAllByCustomerId(@RequestHeader int cucustomerId){
+    List<HouseOrder>  houseOrders =  houseOrderService.findAllByCustomerId(cucustomerId);
+    houseOrders.forEach(order -> {
+       order.setFavorites(null);
+    });
+    return houseOrders;
+  }
 }

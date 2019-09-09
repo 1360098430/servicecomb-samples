@@ -56,4 +56,8 @@ public interface HouseOrderApi {
   List<Sale> indexAllSales();
 
   void updateSaleQualification(List<SaleQualification> saleQualifications);
+
+  //查询我的订单状态
+  public List<HouseOrder> findAllByCustomerId(int cucustomerId);
+
 }

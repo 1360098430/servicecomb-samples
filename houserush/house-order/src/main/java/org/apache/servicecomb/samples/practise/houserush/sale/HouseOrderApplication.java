@@ -30,7 +30,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableServiceComb
 @EnableJpaAuditing
-@EnableZipkinTracing
+//@EnableZipkinTracing
 public class HouseOrderApplication {
   public static void main(String[] args) {
     configBeforeBoot();

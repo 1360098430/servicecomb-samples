@@ -58,4 +58,9 @@ public interface HouseOrderService {
   void updateSaleQualification(List<SaleQualification> saleQualifications);
 
   public Sale findBackSale(int saleId);
+
+  public List<HouseOrder> saveHousder(List<HouseOrder> houseOrders);
+
+  //查询我的订单状态
+  public List<HouseOrder> findAllByCustomerId(int cucustomerId);
 }

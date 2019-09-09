@@ -30,7 +30,7 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableServiceComb
 @EnableJpaAuditing
-@EnableZipkinTracing
+//@EnableZipkinTracing
 public class LoginApplication {
 
   public static void main(String[] args) {
