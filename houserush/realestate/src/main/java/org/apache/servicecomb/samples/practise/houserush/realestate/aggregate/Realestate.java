@@ -60,4 +60,19 @@ public class Realestate {
   @LastModifiedDate
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
+
+ private String address;//地址
+
+ private String type; //直接存在汉字 (住宅)
+
+ private String avgprice;//均价
+
+ private String useyear;//产权年限
+
+ private String  usernum ;//规划户数
+
+ private String area;//占地面积
+
+ private String buildname;//建筑类型
+
 }
