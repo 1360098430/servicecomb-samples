@@ -25,13 +25,13 @@ service_description:
 servicecomb:
   service:
     registry:
-      address: http://127.0.0.1:30100
+      address: http://192.168.229.184:30100
       instance:
         watch: false
   uploads:
     directory: d:/tmp
   rest:
-    address: 0.0.0.0:8989
+    address: 0.0.0.0:8889
     server:
       verticle-count: 8
     client:
@@ -42,12 +42,13 @@ servicecomb:
   handler:
     chain:
       Consumer:
-        default: auth,loadbalance,tracing-consumer
-      Provider:
-        default: tracing-provider
-  tracing:
-    collector:
-      address: http://127.0.0.1:9411
+        default: auth,loadbalance
+        #,tracing-consumer
+      #Provider:
+      #  default: tracing-provider
+ # tracing:
+ #   collector:
+ #     address: http://192.168.229.184:9411
 
   inspector:
     enabled: false
@@ -112,7 +113,7 @@ gateway:
     - GET /sales/{realestateId}
     - GET /house_orders/{houseOrderId}
     - GET /user-center/favorites/{id}
-    - GET /user-center/buyHouseNumber
+    - GET /user-center/buyHouseOrderState
     - GET /house-order/sales/details
     - GET /house-order/sales/list
     - GET /login/users/findUser
@@ -120,6 +121,7 @@ gateway:
     - GET /house-order/sales/indexAllSales
     - GET /house-order/sales/indexOrderSales
     - GET /house-order/sales/order/{saleId}
+    - GET /house-order/sales/findAllByCustomerId
   noNeedLoginUrls:
     - POST /login/users
     - PUT /login/users/signin
