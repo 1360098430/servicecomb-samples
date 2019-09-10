@@ -320,4 +320,14 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   public List<HouseOrder> findAllByCustomerId(int cucustomerId){
     return  houseOrderDao.findAllByCustomerId(cucustomerId);
   }
+
+  //通过房号查找房间状态
+  public HouseOrder findAllByHouseId(Integer houseId){
+    return houseOrderDao.findAllByHouseId(houseId);
+  }
+
+  //查询我的房屋收藏状态
+  public List<Favorite> findFavoriteAllByCustomerId(int customerId){
+    return favoriteDao.findAllByCustomerId(customerId);
+  }
 }

@@ -208,11 +208,21 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
 
     qualifications.forEach(qualification ->{
       //所有资格的活动
-      Sale sale = houseOrderService.findSale(qualification.getSaleId());
+      Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
       //查看当前楼盘活动列表
       if(sale.getId().equals(saleId)){
         List<HouseOrder> houseOrders = sale.getHouseOrders();
         houseOrders.forEach(houseOrder ->{
+
+          List<Favorite> favorites = houseOrderService.findFavoriteAllByCustomerId(customerId);
+          //此房屋有收藏
+          if(favorites != null){
+            favorites.forEach(favorite ->{
+              if(favorite.getCustomerId()==customerId && favorite.getHouseOrderId() ==houseOrder.getHouseId() ){
+                houseOrder.setFavorite("collect");//收藏状态
+              }
+            });
+          }
           //房屋
           House house = realestateApi.findHouse(houseOrder.getHouseId());
           houseOrder.setHouseName(house.getName());//名称
@@ -236,6 +246,23 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     saleList.forEach(sale -> {
       List<HouseOrder> houseOrders = sale.getHouseOrders();
       houseOrders.forEach(houseOrder ->{
+        Customer customer = new Customer() ;
+        //获取客户名称
+        try{
+           customer = customerManageApi.findCustomer(houseOrder.getCustomerId());
+          if(customer != null){
+            houseOrder.setName(customer.getName());//客户姓名
+            houseOrder.setPhone(customer.getPhone());//客户手机号
+          }else{
+            houseOrder.setName("");//客户姓名
+            houseOrder.setPhone("");//客户手机号
+          }
+        }catch (Exception e){
+          houseOrder.setName("");//客户姓名
+          houseOrder.setPhone("");//客户手机号
+          e.printStackTrace();
+        }
+
         //房屋
         House house = realestateApi.findHouse(houseOrder.getHouseId());
         Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
@@ -256,5 +283,11 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
        order.setFavorites(null);
     });
     return houseOrders;
+  }
+
+  //通过房号查找房屋状态
+  @GetMapping("sales/findAllByHouseId")
+  public HouseOrder findAllByHouseId(Integer houseId){
+    return houseOrderService.findAllByHouseId(houseId);
   }
 }

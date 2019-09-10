@@ -63,4 +63,9 @@ public interface HouseOrderService {
 
   //查询我的订单状态
   public List<HouseOrder> findAllByCustomerId(int cucustomerId);
+
+  public HouseOrder findAllByHouseId(Integer houseId);
+
+  //查询我的房屋收藏状态
+  public List<Favorite> findFavoriteAllByCustomerId(int customerId);
 }

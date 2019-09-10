@@ -77,10 +77,19 @@ public class HouseOrder {
   private BigDecimal price;
 
   @Transient
+  private String favorite;
+
+  @Transient
   private String builDingName;
 
   @Transient
   private String realestateName;
+
+  @Transient
+  private String name;
+
+  @Transient
+  private String phone;
 
   public static void main(String[] args) {
     String str = JSONObject.toJSONString(new HouseOrder(), SerializerFeature.WriteMapNullValue);

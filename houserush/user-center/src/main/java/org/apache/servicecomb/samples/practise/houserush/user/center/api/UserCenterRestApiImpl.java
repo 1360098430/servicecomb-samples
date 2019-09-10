@@ -60,7 +60,7 @@ public class UserCenterRestApiImpl implements UserCenterApi {
       favorite.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
       Sale sale = houseOrderApi.findSaleByRealestateId(house.getBuilding().getRealestate().getId());
       //房屋订单状态
-      HouseOrder houseOrder = houseOrderApi.findOne(favorite.getHouseOrderId());
+      HouseOrder houseOrder = houseOrderApi.findAllByHouseId(favorite.getHouseOrderId());
       favorite.setState(houseOrder.getState());
       //楼盘活动开售状态
       //favorite.setState(sale.getState());
@@ -94,7 +94,7 @@ public class UserCenterRestApiImpl implements UserCenterApi {
     houseDetail.setArea(realestate.getArea());//占地面积
     houseDetail.setBuildname(realestate.getBuildname());////建筑类型
 
-    HouseOrder houseOrder = houseOrderApi.findOne(id);
+    HouseOrder houseOrder = houseOrderApi.findAllByHouseId(id);
     houseDetail.setState(houseOrder.getState());//订单状态
     return  houseDetail;
   }

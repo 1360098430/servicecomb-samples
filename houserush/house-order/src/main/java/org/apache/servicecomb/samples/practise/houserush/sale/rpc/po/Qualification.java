@@ -17,11 +17,38 @@
 
 package org.apache.servicecomb.samples.practise.houserush.sale.rpc.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
+@Entity
+@Table(name = "qualifications")
+@EntityListeners(AuditingEntityListener.class)
 public class Qualification {
-  private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "customer_id")
+  private Customer customer;
 
   private Integer saleId;
+
+  private Integer houseId;
+
+  @CreatedDate
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date createdAt;
+
+  @LastModifiedDate
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date UpdatedAt;
 }

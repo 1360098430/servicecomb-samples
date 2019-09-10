@@ -44,4 +44,6 @@ public interface HouseOrderDao extends JpaRepository<HouseOrder, Integer> {
 
   //查询我的订单状态
   List<HouseOrder> findAllByCustomerId(int cucustomerId);
+
+  public HouseOrder findAllByHouseId(Integer houseId);
 }

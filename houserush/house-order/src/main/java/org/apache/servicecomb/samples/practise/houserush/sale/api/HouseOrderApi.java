@@ -60,4 +60,7 @@ public interface HouseOrderApi {
   //查询我的订单状态
   public List<HouseOrder> findAllByCustomerId(int cucustomerId);
 
+  //通过房号查找房状态
+  public HouseOrder findAllByHouseId(Integer houseId);
+
 }

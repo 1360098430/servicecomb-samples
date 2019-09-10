@@ -17,15 +17,53 @@
 
 package org.apache.servicecomb.samples.practise.houserush.sale.rpc.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
+@Entity
+@Table(name = "customers")
+@SQLDelete(sql = "update customers set  deleted_at = now() where id = ?")
+@Where(clause = "deleted_at is null")
+@EntityListeners(AuditingEntityListener.class)
 public class Customer {
-  private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
 
   private String phone;
 
-  private List<Qualification> qualifications;
+  private String name;
+
+  private String idCard;
+
+  private String realName;
+
+  private String address;
+
+  @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+  private List<Qualification> qualifications = new ArrayList<>();
+
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date deletedAt;
+
+  @CreatedDate
+  @Temporal(TemporalType.TIMESTAMP)
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date createdAt;
+
+  @LastModifiedDate
+  @Temporal(TemporalType.TIMESTAMP)
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date updatedAt;
 }

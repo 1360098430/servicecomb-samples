@@ -16,7 +16,9 @@ public interface HouseOrderApi {
   HouseOrder findOne(int houseOrderId);
 
   List<Sale> indexSales();
+
   //查询我的订单状态
-  @GetMapping("sales/findAllByCustomerId")
   public List<HouseOrder> findAllByCustomerId(@RequestHeader int cucustomerId);
+
+  public HouseOrder findAllByHouseId(Integer houseId);
 }
