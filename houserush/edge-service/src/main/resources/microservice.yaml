@@ -123,6 +123,11 @@ gateway:
     - GET /house-order/sales/order/{saleId}
     - GET /house-order/sales/findAllByCustomerId
     - GET /house-order/sales/findAllByHouseId
+    - PUT /house-order/house_orders/{houseOrderId}/add_favorite
+    - DELETE /house-order/favorites/{id}
+    - PUT /house-order/house_orders/{saleId}/{houseOrderId}
+    - PUT /house-order/house_orders/{houseOrderId}/cancel
+
   noNeedLoginUrls:
     - POST /login/users
     - PUT /login/users/signin
