@@ -183,7 +183,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
 
     qualifications.forEach(qualification ->{
       //所有资格的活动
-      Sale sale = houseOrderService.findSale(qualification.getSaleId());
+      Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
          //获取楼盘名称
       Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
       sale.setRealestateName(realestate.getName());
