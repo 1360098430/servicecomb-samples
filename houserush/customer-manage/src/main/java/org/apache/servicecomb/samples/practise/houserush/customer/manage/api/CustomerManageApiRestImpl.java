@@ -21,13 +21,18 @@ import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Customer;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Qualification;
+import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.HouseOrderApi;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.UserApi;
+import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.SaleQualification;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.User;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.service.CustomerManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestSchema(schemaId = "customerManageApiRest")
 @RequestMapping("/")
@@ -39,6 +44,9 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
   @Autowired
   private CustomerManageService customerManageService;
 
+  @RpcReference(microserviceName = "house-order", schemaId = "houseOrderApiRest")
+  private HouseOrderApi houseOrderApi;
+
   @PostMapping("customers")
   public Customer createCustomer(@RequestBody Customer customer) {
     User user = new User();
@@ -49,6 +57,19 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
     Customer c1 = new Customer();
     c1.setId(user1.getId());
     qualification.setCustomer(c1);
+
+    //数据同步到sale 表中去
+    List<SaleQualification> saleQualifications = new ArrayList<>();
+    SaleQualification saleQualification = new SaleQualification();
+
+    //saleQualification.setId(c1.getId());
+    saleQualification.setCustomerId(c1.getId());//客户id
+    saleQualification.setQualificationCount(1);//限制资数
+    saleQualification.setSaleId(qualification.getSaleId());//活动id
+
+    saleQualifications.add(saleQualification);
+    houseOrderApi.updateSaleQualification(saleQualifications);
+    //数据同步到sale 表中去
 
     return customerManageService.createCustomer(customer);
   }

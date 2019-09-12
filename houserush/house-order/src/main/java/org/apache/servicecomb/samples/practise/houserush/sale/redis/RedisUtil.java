@@ -27,14 +27,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-//@Component
+@Component
 public class RedisUtil {
 
   private StringRedisTemplate redisTemplate;
 
-  /*public RedisUtil(@Autowired StringRedisTemplate redisTemplate) {
+  public RedisUtil(@Autowired StringRedisTemplate redisTemplate) {
     this.redisTemplate = redisTemplate;
-  }*/
+  }
 
   public boolean expire(String key, long time) {
     try {

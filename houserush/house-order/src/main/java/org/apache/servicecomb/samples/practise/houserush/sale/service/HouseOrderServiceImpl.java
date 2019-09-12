@@ -62,11 +62,11 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Autowired
   SaleQualificationDao saleQualificationDao;
 
-  //@Autowired
-  //RedisUtil redisUtil;
+  @Autowired
+  RedisUtil redisUtil;
 
-//  @Autowired
-//  RedisTemplate redisTemplate;
+  @Autowired
+  RedisTemplate redisTemplate;
 
   @Autowired
   RedisKey redisKey;
@@ -107,7 +107,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Override
   @Transactional
   public HouseOrder placeHouseOrder(int customerId, int houseOrderId, int saleId) {
-  /*  String saleHashKey = redisKey.getSaleHashKey(saleId);
+    String saleHashKey = redisKey.getSaleHashKey(saleId);
     Object hstate = redisUtil.hget(saleHashKey, houseOrderId + "");
     if ("confirmed".equals(hstate)) {
       throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "this house have been occupied first by other customer, please choose another house or try it later.");
@@ -135,8 +135,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
       return houseOrder;
     } else {
       throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "this house which you chose does not belong to the current sale.");
-    }*/
-  return null;
+    }
   }
 
   @Override
@@ -147,7 +146,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Override
   @Transactional
   public HouseOrder cancelHouseOrder(int customerId, int houseOrderId) {
-   /* HouseOrder houseOrder = houseOrderDao.findOneForUpdate(houseOrderId);
+    HouseOrder houseOrder = houseOrderDao.findOneForUpdate(houseOrderId);
     Sale sale = houseOrder.getSale();
     if (null != sale && "opening".equals(sale.getState())) {
       if (customerId == houseOrder.getCustomerId()) {
@@ -162,8 +161,8 @@ public class HouseOrderServiceImpl implements HouseOrderService {
       }
     } else {
       throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "this house which you chose does not belong to the current sale.");
-    }*/
-   return null;
+    }
+
   }
 
   @Override
@@ -216,7 +215,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Span
   @Override
   public Sale findSale(int saleId) {
- /*   String saleKey = redisKey.getSaleKey(saleId);
+    String saleKey = redisKey.getSaleKey(saleId);
     String saleHashKey = redisKey.getSaleHashKey(saleId);
     String saleStr = redisUtil.get(saleKey);
     Sale sale;
@@ -250,8 +249,6 @@ public class HouseOrderServiceImpl implements HouseOrderService {
       h.setHouseId(null);
     }
     return sale;
-    */
-     return null;
   }
 
   @Override
@@ -297,7 +294,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   }
 
   private boolean isSaleOpen(int saleId) {
-   /* String obj = redisUtil.get(redisKey.getSaleNoHouseOrder(saleId));
+    String obj = redisUtil.get(redisKey.getSaleNoHouseOrder(saleId));
     if (obj == null) {
       Sale sale = saleDao.findOne(saleId);
       if (sale == null) return false;
@@ -307,8 +304,6 @@ public class HouseOrderServiceImpl implements HouseOrderService {
     }
     Sale sale = JSON.parseObject(obj, Sale.class);
     return "opening".equals(sale.getState());
-    */
-   return true;
   }
 
   public List<HouseOrder> saveHousder(List<HouseOrder> houseOrders){
