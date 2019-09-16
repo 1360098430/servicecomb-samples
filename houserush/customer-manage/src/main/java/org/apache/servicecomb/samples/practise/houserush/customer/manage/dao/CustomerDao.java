@@ -19,6 +19,11 @@ package org.apache.servicecomb.samples.practise.houserush.customer.manage.dao;
 
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Date;
 
 public interface CustomerDao extends JpaRepository<Customer, Integer> {
+
 }

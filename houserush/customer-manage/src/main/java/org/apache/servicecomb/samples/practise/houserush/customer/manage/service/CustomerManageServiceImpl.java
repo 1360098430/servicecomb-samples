@@ -93,4 +93,5 @@ public class CustomerManageServiceImpl implements CustomerManageService {
   public int getQualificationsCount(int customerId, int saleId) {
     return qualificationDao.countByCustomerIdAndSaleId(customerId, saleId);
   }
+
 }

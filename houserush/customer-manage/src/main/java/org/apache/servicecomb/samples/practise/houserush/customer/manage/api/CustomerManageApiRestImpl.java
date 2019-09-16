@@ -19,6 +19,7 @@ package org.apache.servicecomb.samples.practise.houserush.customer.manage.api;
 
 import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
+import org.apache.servicecomb.samples.practise.houserush.customer.manage.Utils;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Customer;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Qualification;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.HouseOrderApi;
@@ -58,21 +59,25 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
     c1.setId(user1.getId());
     qualification.setCustomer(c1);
 
-    //数据同步到sale 表中去
-    List<SaleQualification> saleQualifications = new ArrayList<>();
-    SaleQualification saleQualification = new SaleQualification();
+//    //数据同步到sale 表中去
+//    List<SaleQualification> saleQualifications = new ArrayList<>();
+//    SaleQualification saleQualification = new SaleQualification();
+//
+//    //saleQualification.setId(c1.getId());
+//    saleQualification.setCustomerId(c1.getId());//客户id
+//    saleQualification.setQualificationCount(1);//限制资数
+//    saleQualification.setSaleId(qualification.getSaleId());//活动id
+//
+//    saleQualifications.add(saleQualification);
+//    houseOrderApi.updateSaleQualification(saleQualifications);
+//    //数据同步到sale 表中去
 
-    //saleQualification.setId(c1.getId());
-    saleQualification.setCustomerId(c1.getId());//客户id
-    saleQualification.setQualificationCount(1);//限制资数
-    saleQualification.setSaleId(qualification.getSaleId());//活动id
-
-    saleQualifications.add(saleQualification);
-    houseOrderApi.updateSaleQualification(saleQualifications);
-    //数据同步到sale 表中去
-
-    return customerManageService.createCustomer(customer);
+    Customer customer1 = customerManageService.createCustomer(customer);
+    Utils.updateCustomersBySql(c1.getId(),customer1.getId());
+    return customer1;
   }
+
+
 
   @GetMapping("customers/{id}")
   public Customer findCustomer(@PathVariable int id) {
