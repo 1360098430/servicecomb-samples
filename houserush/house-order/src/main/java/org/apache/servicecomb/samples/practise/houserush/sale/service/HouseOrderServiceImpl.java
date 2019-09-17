@@ -106,7 +106,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Span
   @Override
   @Transactional
-  public HouseOrder placeHouseOrder(int customerId, int houseOrderId, int saleId) {
+  public HouseOrder placeHouseOrder(int customerId, int houseOrderId, int saleId,int orderId) {
     String saleHashKey = redisKey.getSaleHashKey(saleId);
     Object hstate = redisUtil.hget(saleHashKey, houseOrderId + "");
     if ("confirmed".equals(hstate)) {
@@ -119,12 +119,14 @@ public class HouseOrderServiceImpl implements HouseOrderService {
             "the qualifications count is " + qualification.getQualificationCount() + " , the order count is " + qualification.getOrderCount());
       }
       HouseOrder houseOrder = new HouseOrder();
-      houseOrder.setId(houseOrderId);
+       houseOrder.setId(orderId);
+     // houseOrder.setId(houseOrderId);
       houseOrder.setState("confirmed");
       houseOrder.setOrderedAt(new Date());
       houseOrder.setCustomerId(customerId);
       houseOrder.setHouseId(houseOrderId);
-      int count = houseOrderDao.updateByIdAndCustomerIdIsNull(customerId, houseOrder.getState(), houseOrder.getOrderedAt(), houseOrder.getHouseId());
+      int count = houseOrderDao.updateByIdAndCustomerIdIsNull(customerId, houseOrder.getState(), houseOrder.getOrderedAt(),orderId);
+     // int count = houseOrderDao.updateByIdAndCustomerIdIsNull(customerId, houseOrder.getState(), houseOrder.getOrderedAt(), houseOrder.getHouseId(),orderId);
       if (count < 1) {
         redisUtil.hset(saleHashKey, houseOrderId + "", "confirmed", 600);
         throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "this house have been occupied first by other customer, please choose another house or try it later.");
@@ -145,8 +147,8 @@ public class HouseOrderServiceImpl implements HouseOrderService {
 
   @Override
   @Transactional
-  public HouseOrder cancelHouseOrder(int customerId, int houseOrderId) {
-    HouseOrder houseOrder = houseOrderDao.findOneForUpdate(houseOrderId);
+  public HouseOrder cancelHouseOrder(int customerId, int houseOrderId,int orderId) {
+    HouseOrder houseOrder = houseOrderDao.findOneForUpdate(orderId);
     Sale sale = houseOrder.getSale();
     if (null != sale && "opening".equals(sale.getState())) {
       if (customerId == houseOrder.getCustomerId()) {
@@ -154,7 +156,10 @@ public class HouseOrderServiceImpl implements HouseOrderService {
         houseOrder.setState("new");
         houseOrder.setOrderedAt(null);
         houseOrderDao.save(houseOrder);
-        redisUtil.hdel(redisKey.getSaleHashKey(houseOrder.getSale().getId()));
+        //删除订单缓存中的状态
+        redisUtil.hdel(""+redisKey.getSaleHashKey(houseOrder.getSale().getId()),houseOrderId+"");
+        
+       // redisUtil.hdel(redisKey.getSaleHashKey(houseOrder.getSale().getId())+"",houseOrderId+"");
         return houseOrder;
       } else {
         throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "cannot unoccupied the house which have not been occupied first by current customer first!");
@@ -278,6 +283,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   }
 
   @Override
+  @Transactional
   public void updateSaleQualification(List<SaleQualification> saleQualifications) {
     if (null != saleQualifications) {
       saleQualifications.forEach(saleQualification -> {

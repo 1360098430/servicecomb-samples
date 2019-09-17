@@ -27,13 +27,13 @@ import java.util.List;
 public interface HouseOrderService {
   List<HouseOrder> createHouseOrders(int saleId, List<Integer> houseIds);
 
-  HouseOrder placeHouseOrder(int customerId, int houseOrderId, int saleId);
+  HouseOrder placeHouseOrder(int customerId, int houseOrderId, int saleId,int orderId);
 
   //HouseOrder placeHouseOrder(int customerId, int houseOrderId);
 
   HouseOrder findOne(int houseOrderId);
 
-  HouseOrder cancelHouseOrder(int customerId, int houseOrderId);
+  HouseOrder cancelHouseOrder(int customerId, int houseOrderId,int orderId);
 
   Favorite addFavorite(int customerId, int houseOrderId);
 

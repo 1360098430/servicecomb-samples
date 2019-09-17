@@ -54,15 +54,15 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   }
 
   //@PutMapping("house_orders/{houseOrderId}") 抢购
-  @PutMapping("house_orders/{saleId}/{houseOrderId}")
-  public HouseOrder placeHouseOrder(@RequestHeader int customerId, @PathVariable int saleId,@PathVariable int houseOrderId) {
-    return houseOrderService.placeHouseOrder(customerId, houseOrderId,saleId);
+  @PutMapping("house_orders/{saleId}/{houseOrderId}/{orderId}")
+  public HouseOrder placeHouseOrder(@RequestHeader int customerId, @PathVariable int saleId,@PathVariable int houseOrderId,@PathVariable int orderId) {
+    return houseOrderService.placeHouseOrder(customerId, houseOrderId,saleId,orderId);
   }
 
   //取消抢购
-  @PutMapping("house_orders/{houseOrderId}/cancel")
-  public HouseOrder cancelHouseOrder(@RequestHeader int customerId, @PathVariable int houseOrderId) {
-    return houseOrderService.cancelHouseOrder(customerId, houseOrderId);
+  @PutMapping("house_orders/{houseOrderId}/cancel/{orderId}")
+  public HouseOrder cancelHouseOrder(@RequestHeader int customerId, @PathVariable int houseOrderId,@PathVariable int orderId) {
+    return houseOrderService.cancelHouseOrder(customerId, houseOrderId,orderId);
   }
 
   @Override

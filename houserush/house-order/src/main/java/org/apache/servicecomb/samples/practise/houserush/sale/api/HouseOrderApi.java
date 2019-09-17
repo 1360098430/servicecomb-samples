@@ -27,9 +27,9 @@ import java.util.List;
 public interface HouseOrderApi {
   List<HouseOrder> createHouseOrders(int saleId, List<Integer> houseIds);
 
-  HouseOrder placeHouseOrder(int customerId, int houseOrderId,int saleId);
+  HouseOrder placeHouseOrder(int customerId, int houseOrderId,int saleId,int orderId);
 
-  HouseOrder cancelHouseOrder(int customerId, int houseOrderId);
+  HouseOrder cancelHouseOrder(int customerId, int houseOrderId,int orderId);
 
   HouseOrder findOne(int houseOrderId);
 

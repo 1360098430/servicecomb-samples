@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: edgeservice
-  version: 0.0.3
+  version: 1.1.5
 servicecomb:
   service:
     registry:
@@ -103,7 +103,7 @@ gateway:
     - GET /customer-manage/customers
     - PUT /customer-manage/customers/{id}/update_qualifications
     - POST /house-order/sales/{saleId}/house_orders
-    - PUT /house-order/house_orders/{saleId}/{houseOrderId}
+    - PUT /house-order/house_orders/{saleId}/{houseOrderId}/{orderId}
     - POST /house-order/sales
     - GET /house-order/sales/{saleId}
     - PUT /house-order/sales/{saleId}
@@ -125,8 +125,7 @@ gateway:
     - GET /house-order/sales/findAllByHouseId
     - PUT /house-order/house_orders/{houseOrderId}/add_favorite
     - DELETE /house-order/favorites/{id}
-    - PUT /house-order/house_orders/{saleId}/{houseOrderId}
-    - PUT /house-order/house_orders/{houseOrderId}/cancel
+    - PUT /house-order/house_orders/{houseOrderId}/cancel/{orderId}
 
   noNeedLoginUrls:
     - POST /login/users
