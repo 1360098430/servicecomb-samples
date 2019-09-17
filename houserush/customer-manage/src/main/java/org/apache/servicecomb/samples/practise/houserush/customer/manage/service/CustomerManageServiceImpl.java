@@ -23,16 +23,18 @@ import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggrega
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.dao.CustomerDao;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.dao.QualificationDao;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.HouseOrderApi;
+import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.UserApi;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.SaleQualification;
+import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,9 +49,38 @@ public class CustomerManageServiceImpl implements CustomerManageService {
   @RpcReference(microserviceName = "house-order", schemaId = "houseOrderApiRest")
   private HouseOrderApi houseOrderApi;
 
+  @RpcReference(microserviceName = "login", schemaId = "userApiRest")
+  private UserApi userApi;
+
+  @PersistenceContext
+  private EntityManager em;
+
   @Override
   public Customer createCustomer(Customer customer) {
-    return customerDao.save(customer);
+    User user = new User();
+    user.setUsername(customer.getRealName());
+    user.setPassword("123456");
+    User user1 = userApi.createUser(user);
+    Qualification qualification =customer.getQualifications().get(0);
+    Customer c1 = new Customer();
+    c1.setId(user1.getId());
+    qualification.setCustomer(c1);
+    Customer customer1 = customerDao.save(customer);
+
+    //更新客户id
+    em.createQuery("UPDATE customers set  id=(?1) where id= (?2)").setParameter(1, c1.getId())
+                       .setParameter(2,customer1.getId())
+                       .executeUpdate();
+   //数据同步到sale 表中去
+    List<SaleQualification> saleQualifications = new ArrayList<>();
+    SaleQualification saleQualification = new SaleQualification();
+    saleQualification.setCustomerId(c1.getId());//客户id
+    saleQualification.setQualificationCount(100);//限制客户抢购次数默认100次
+    saleQualification.setSaleId(qualification.getSaleId());//活动id
+    saleQualifications.add(saleQualification);
+    houseOrderApi.updateSaleQualification(saleQualifications);
+   //数据同步到sale 表中去
+    return customer1;
   }
 
   @Override

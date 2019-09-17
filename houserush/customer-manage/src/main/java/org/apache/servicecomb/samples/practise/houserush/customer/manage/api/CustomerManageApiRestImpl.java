@@ -19,28 +19,17 @@ package org.apache.servicecomb.samples.practise.houserush.customer.manage.api;
 
 import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
-import org.apache.servicecomb.samples.practise.houserush.customer.manage.Utils;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Customer;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Qualification;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.HouseOrderApi;
-import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.UserApi;
-import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.SaleQualification;
-import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.User;
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.service.CustomerManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestSchema(schemaId = "customerManageApiRest")
 @RequestMapping("/")
 public class CustomerManageApiRestImpl implements CustomerManageApi {
-
-  @RpcReference(microserviceName = "login", schemaId = "userApiRest")
-  private UserApi userApi;
 
   @Autowired
   private CustomerManageService customerManageService;
@@ -50,36 +39,8 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
 
   @PostMapping("customers")
   public Customer createCustomer(@RequestBody Customer customer) {
-    User user = new User();
-    user.setUsername(customer.getRealName());
-    user.setPassword("123456");
-    User user1 = userApi.createUser(user);
-    Qualification qualification =customer.getQualifications().get(0);
-    Customer c1 = new Customer();
-    c1.setId(user1.getId());
-    qualification.setCustomer(c1);
-
-    Customer customer1 = customerManageService.createCustomer(customer);
-    Utils.updateCustomersBySql(c1.getId(),customer1.getId());
-
-//    //数据同步到sale 表中去
-    List<SaleQualification> saleQualifications = new ArrayList<>();
-    SaleQualification saleQualification = new SaleQualification();
-
-    //saleQualification.setId(c1.getId());
-    saleQualification.setCustomerId(c1.getId());//客户id
-    saleQualification.setQualificationCount(100);//限制客户抢购次数默认100次
-    saleQualification.setSaleId(qualification.getSaleId());//活动id
-
-    saleQualifications.add(saleQualification);
-    houseOrderApi.updateSaleQualification(saleQualifications);
-//    //数据同步到sale 表中去
-
-
-    return customer1;
+     return customerManageService.createCustomer(customer);
   }
-
-
 
   @GetMapping("customers/{id}")
   public Customer findCustomer(@PathVariable int id) {
