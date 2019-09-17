@@ -158,7 +158,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
         houseOrderDao.save(houseOrder);
         //删除订单缓存中的状态
         redisUtil.hdel(""+redisKey.getSaleHashKey(houseOrder.getSale().getId()),houseOrderId+"");
-        
+
        // redisUtil.hdel(redisKey.getSaleHashKey(houseOrder.getSale().getId())+"",houseOrderId+"");
         return houseOrder;
       } else {
