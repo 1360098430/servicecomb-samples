@@ -29,6 +29,7 @@ import org.apache.servicecomb.samples.practise.houserush.customer.manage.rpc.po.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,6 +57,7 @@ public class CustomerManageServiceImpl implements CustomerManageService {
   private EntityManager em;
 
   @Override
+  @Transactional
   public Customer createCustomer(Customer customer) {
     User user = new User();
     user.setUsername(customer.getRealName());
@@ -68,9 +70,8 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     Customer customer1 = customerDao.save(customer);
 
     //更新客户id
-    em.createQuery("UPDATE customers set  id=(?1) where id= (?2)").setParameter(1, c1.getId())
-                       .setParameter(2,customer1.getId())
-                       .executeUpdate();
+    customerDao.updateCustomerIdUseUseId(c1.getId(),customer1.getId());
+
    //数据同步到sale 表中去
     List<SaleQualification> saleQualifications = new ArrayList<>();
     SaleQualification saleQualification = new SaleQualification();

@@ -24,6 +24,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 
-public interface CustomerDao extends JpaRepository<Customer, Integer> {
+public interface CustomerDao extends JpaRepository<Customer, Integer>,CustomerDaoMore {
 
 }
