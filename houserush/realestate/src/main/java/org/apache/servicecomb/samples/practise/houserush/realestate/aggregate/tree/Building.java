@@ -50,6 +50,7 @@ public class Building {
 
   @JsonIgnoreProperties(ignoreUnknown = true, value = {"building"})
   @OneToMany(mappedBy = "building",fetch= FetchType.EAGER)
+  @Where(clause = "state ='new'")
   private Set<House> houses = new HashSet<>();
 
   private String name;
