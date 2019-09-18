@@ -61,7 +61,7 @@ public class UserCenterRestApiImpl implements UserCenterApi {
       favorite.setRealestateName(house.getBuilding().getRealestate().getName());//楼盘名称
       Sale sale = houseOrderApi.findSaleByRealestateId(house.getBuilding().getRealestate().getId());
       //房屋订单状态
-      HouseOrder houseOrder = houseOrderApi.findAllByHouseId(favorite.getHouseOrderId());
+      HouseOrder houseOrder = houseOrderApi.findAllByHouseId(HouseOrder.getHouseId());
       favorite.setState(houseOrder.getState());
       //楼盘活动开售状态
       //favorite.setState(sale.getState());
