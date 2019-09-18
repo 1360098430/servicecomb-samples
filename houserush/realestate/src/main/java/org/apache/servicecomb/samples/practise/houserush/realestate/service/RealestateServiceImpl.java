@@ -164,7 +164,7 @@ public class RealestateServiceImpl implements RealestateService {
   public List<House> lockHousesForSale(List<Integer> houseIds) {
     List<House> houses = houseDao.findAllByIdInForUpdate(houseIds);
     houses.forEach(house -> {
-      if (!"in_stock".equals(house.getState())) {
+      if (!"new".equals(house.getState())) {
         throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "house " + house.getId() + " is not in_stock.");
       }
     });
