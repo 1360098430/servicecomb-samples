@@ -63,22 +63,27 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     user.setUsername(customer.getRealName());
     user.setPassword("123456");
     User user1 = userApi.createUser(user);
-    Qualification qualification =customer.getQualifications().get(0);
-    Customer c1 = new Customer();
-    c1.setId(user1.getId());
-    qualification.setCustomer(c1);
+    //购房资格集合
+    List<SaleQualification> saleQualifications = new ArrayList<>();
+    List<Qualification> qualifications = customer.getQualifications();
+    qualifications.forEach(qualification->{
+      Customer c1 = new Customer();
+      c1.setId(user1.getId());
+      qualification.setCustomer(c1);
+
+      SaleQualification saleQualification = new SaleQualification();
+      saleQualification.setCustomerId(user1.getId());//客户id
+      saleQualification.setQualificationCount(20);//限制客户抢购次数默认20次
+      saleQualification.setSaleId(qualification.getSaleId());//活动id
+      saleQualifications.add(saleQualification);
+
+    });
     Customer customer1 = customerDao.save(customer);
 
     //更新客户id
-    customerDao.updateCustomerIdUseUseId(c1.getId(),customer1.getId());
+    customerDao.updateCustomerIdUseUseId(user1.getId(),customer1.getId());
 
-   //数据同步到sale 表中去
-    List<SaleQualification> saleQualifications = new ArrayList<>();
-    SaleQualification saleQualification = new SaleQualification();
-    saleQualification.setCustomerId(c1.getId());//客户id
-    saleQualification.setQualificationCount(100);//限制客户抢购次数默认100次
-    saleQualification.setSaleId(qualification.getSaleId());//活动id
-    saleQualifications.add(saleQualification);
+    //数据同步到sale 表中去
     houseOrderApi.updateSaleQualification(saleQualifications);
    //数据同步到sale 表中去
     return customer1;
