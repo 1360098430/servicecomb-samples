@@ -77,13 +77,18 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     List<HouseOrder> houseOrders =sale.getHouseOrders();
     sale.setHouseOrders(null);
     Sale saleTemp = houseOrderService.createSale(sale);
+    List<Integer> houseId = new ArrayList<>();
     houseOrders.forEach(houseOrder -> {
       Sale s = new Sale();
       s.setId(saleTemp.getId());
       houseOrder.setSale(s);
+      houseId.add(houseOrder.getHouseId());
     });
     List<HouseOrder>  houseOrders1= houseOrderService.saveHousder(houseOrders);
     saleTemp.setHouseOrders(houseOrders1);
+
+    //锁定房屋信息
+    realestateApi.lockHousesForSale(houseId);
     return saleTemp;
   }
   @Override
