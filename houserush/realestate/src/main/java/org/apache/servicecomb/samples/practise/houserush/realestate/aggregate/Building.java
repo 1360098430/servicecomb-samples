@@ -49,6 +49,7 @@ public class Building {
 
   @JsonIgnore
   @OneToMany(mappedBy = "building")
+  @Where(clause = "deleted_at is null ")
   private List<House> houses = new ArrayList<>();
 
   private String name;

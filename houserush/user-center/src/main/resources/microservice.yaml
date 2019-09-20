@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
 # name of the declaring microservice
   name: user-center
-  version: 3.0.8
+  version: 3.2.2
 servicecomb:
   service:
     registry:
