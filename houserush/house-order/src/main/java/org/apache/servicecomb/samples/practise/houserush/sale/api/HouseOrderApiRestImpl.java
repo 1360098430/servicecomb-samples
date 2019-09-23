@@ -53,16 +53,14 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     return houseOrderService.createHouseOrders(saleId, houseIds);
   }
 
-  //@PutMapping("house_orders/{houseOrderId}") 抢购
   @PutMapping("house_orders/{saleId}/{houseOrderId}/{orderId}")
-  public HouseOrder placeHouseOrder(@RequestHeader int customerId, @PathVariable int saleId,@PathVariable int houseOrderId,@PathVariable int orderId) {
-    return houseOrderService.placeHouseOrder(customerId, houseOrderId,saleId,orderId);
+  public HouseOrder placeHouseOrder(@RequestHeader int customerId, @PathVariable int saleId, @PathVariable int houseOrderId, @PathVariable int orderId) {
+    return houseOrderService.placeHouseOrder(customerId, houseOrderId, saleId, orderId);
   }
 
-  //取消抢购
   @PutMapping("house_orders/{houseOrderId}/cancel/{orderId}")
-  public HouseOrder cancelHouseOrder(@RequestHeader int customerId, @PathVariable int houseOrderId,@PathVariable int orderId) {
-    return houseOrderService.cancelHouseOrder(customerId, houseOrderId,orderId);
+  public HouseOrder cancelHouseOrder(@RequestHeader int customerId, @PathVariable int houseOrderId, @PathVariable int orderId) {
+    return houseOrderService.cancelHouseOrder(customerId, houseOrderId, orderId);
   }
 
   @Override
@@ -74,7 +72,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @PostMapping("sales")
   public Sale createSale(@RequestBody Sale sale) {
-    List<HouseOrder> houseOrders =sale.getHouseOrders();
+    List<HouseOrder> houseOrders = sale.getHouseOrders();
     sale.setHouseOrders(null);
     Sale saleTemp = houseOrderService.createSale(sale);
     List<Integer> houseId = new ArrayList<>();
@@ -84,13 +82,12 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
       houseOrder.setSale(s);
       houseId.add(houseOrder.getHouseId());
     });
-    List<HouseOrder>  houseOrders1= houseOrderService.saveHousder(houseOrders);
+    List<HouseOrder> houseOrders1 = houseOrderService.saveHousder(houseOrders);
     saleTemp.setHouseOrders(houseOrders1);
-
-    //锁定房屋信息
     realestateApi.lockHousesForSale(houseId);
     return saleTemp;
   }
+
   @Override
   @GetMapping("sales/{saleId}")
   public Sale findSale(@PathVariable int saleId) {
@@ -126,7 +123,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @GetMapping("favorites")
   public List<Favorite> findMyFavorite(@RequestHeader int customerId) {
-    return  houseOrderService.findMyFavorite(customerId);
+    return houseOrderService.findMyFavorite(customerId);
   }
 
   @Override
@@ -148,7 +145,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @GetMapping("sales")
   public List<Sale> indexSales() {
-    List<Sale>  saleList= houseOrderService.indexSales();
+    List<Sale> saleList = houseOrderService.indexSales();
     saleList.forEach(sale -> {
       Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
       sale.setRealestateName(realestate.getName());
@@ -158,18 +155,18 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
 
   @Override
   @PutMapping("sale_qualification")
-  public void updateSaleQualification(@RequestBody List<SaleQualification> saleQualifications){
+  public void updateSaleQualification(@RequestBody List<SaleQualification> saleQualifications) {
     houseOrderService.updateSaleQualification(saleQualifications);
   }
 
-    @Override
+  @Override
   @GetMapping("sales/indexAllSales")
   public List<Sale> indexAllSales() {
-    List<Sale>  saleList= houseOrderService.indexSales();
-      saleList.forEach(sale -> {
-        Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
-        sale.setRealestateName(realestate.getName());
-      });
+    List<Sale> saleList = houseOrderService.indexSales();
+    saleList.forEach(sale -> {
+      Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
+      sale.setRealestateName(realestate.getName());
+    });
     return saleList;
   }
 
@@ -178,19 +175,14 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
 
   @GetMapping("sales/list")
   public List<Sale> indexListSales(@RequestHeader int customerId) {
-    List<Sale>  saleList = new ArrayList<>();
-    //查询我的购房资格列表
+    List<Sale> saleList = new ArrayList<>();
     Customer customer = customerManageApi.findCustomer(customerId);
-    if(customer == null){
+    if (customer == null) {
       return saleList;
     }
-    //购房销售活动列表
     List<Qualification> qualifications = customer.getQualifications();
-
-    qualifications.forEach(qualification ->{
-      //所有资格的活动
+    qualifications.forEach(qualification -> {
       Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
-         //获取楼盘名称
       Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
       sale.setRealestateName(realestate.getName());
       saleList.add(sale);
@@ -199,101 +191,73 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   }
 
 
-
   @GetMapping("sales/details/{saleId}")
   public List<Sale> indexDetailsSales(@RequestHeader int customerId, @PathVariable int saleId) {
-    List<Sale>  saleList = new ArrayList<>();
-    //查询我的购房资格列表
+    List<Sale> saleList = new ArrayList<>();
     Customer customer = customerManageApi.findCustomer(customerId);
-
-    if(customer == null){
+    if (customer == null) {
       return saleList;
     }
-    //购房销售活动列表
     List<Qualification> qualifications = customer.getQualifications();
-
-    qualifications.forEach(qualification ->{
-      //所有资格的活动
+    qualifications.forEach(qualification -> {
       Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
-      //查看当前楼盘活动列表
-      if(sale.getId().equals(saleId)){
+      if (sale.getId().equals(saleId)) {
         List<HouseOrder> houseOrders = sale.getHouseOrders();
-        houseOrders.forEach(houseOrder ->{
-
+        houseOrders.forEach(houseOrder -> {
           List<Favorite> favorites = houseOrderService.findFavoriteAllByCustomerId(customerId);
-          //此房屋有收藏
-          if(favorites != null){
-            favorites.forEach(favorite ->{
-              if(favorite.getCustomerId()==customerId && favorite.getHouseOrderId() ==houseOrder.getHouseId() ){
-                houseOrder.setFavorite("collect");//收藏状态
+          if (favorites != null) {
+            favorites.forEach(favorite -> {
+              if (favorite.getCustomerId() == customerId && favorite.getHouseOrderId() == houseOrder.getHouseId()) {
+                houseOrder.setFavorite("collect");// sate collect
               }
             });
           }
-          //房屋
           House house = realestateApi.findHouse(houseOrder.getHouseId());
-          houseOrder.setHouseName(house.getName());//名称
-          houseOrder.setPrice(house.getPrice());//价格
-          houseOrder.setBuilDingName(house.getBuilding().getName());//楼栋名称
+          houseOrder.setHouseName(house.getName());
+          houseOrder.setPrice(house.getPrice());
+          houseOrder.setBuilDingName(house.getBuilding().getName());
 
-        } );
+        });
         saleList.add(sale);
       }
     });
     return saleList;
   }
 
-  /**
-   * 所有活动订单状态
-   * @return
-   */
   @GetMapping("sales/indexOrderSales")
   public List<Sale> indexOrderSales() {
-    List<Sale>  saleList= houseOrderService.indexSales();
+    List<Sale> saleList = houseOrderService.indexSales();
     saleList.forEach(sale -> {
       List<HouseOrder> houseOrders = sale.getHouseOrders();
-      houseOrders.forEach(houseOrder ->{
-        Customer customer = new Customer() ;
-        //获取客户名称
-        try{
-           customer = customerManageApi.findCustomer(houseOrder.getCustomerId());
-          if(customer != null){
-            houseOrder.setName(customer.getName());//客户姓名
-            houseOrder.setPhone(customer.getPhone());//客户手机号
-          }else{
-            houseOrder.setName("");//客户姓名
-            houseOrder.setPhone("");//客户手机号
-          }
-        }catch (Exception e){
-          houseOrder.setName("");//客户姓名
-          houseOrder.setPhone("");//客户手机号
-          e.printStackTrace();
+      houseOrders.forEach(houseOrder -> {
+        Customer customer = customerManageApi.findCustomer(houseOrder.getCustomerId());
+        if (customer != null) {
+          houseOrder.setName(customer.getName());
+          houseOrder.setPhone(customer.getPhone());
         }
 
-        //房屋
         House house = realestateApi.findHouse(houseOrder.getHouseId());
         Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
         houseOrder.setRealestateName(realestate.getName());
-        houseOrder.setHouseName(house.getName());//名称
-        houseOrder.setPrice(house.getPrice());//价格
-        houseOrder.setBuilDingName(house.getBuilding().getName());//楼栋名称
+        houseOrder.setHouseName(house.getName());
+        houseOrder.setPrice(house.getPrice());
+        houseOrder.setBuilDingName(house.getBuilding().getName());
       });
     });
     return saleList;
   }
 
-  //查询我的订单状态
   @GetMapping("sales/findAllByCustomerId")
-  public List<HouseOrder> findAllByCustomerId(@RequestHeader int cucustomerId){
-    List<HouseOrder>  houseOrders =  houseOrderService.findAllByCustomerId(cucustomerId);
+  public List<HouseOrder> findAllByCustomerId(@RequestHeader int cucustomerId) {
+    List<HouseOrder> houseOrders = houseOrderService.findAllByCustomerId(cucustomerId);
     houseOrders.forEach(order -> {
-       order.setFavorites(null);
+      order.setFavorites(null);
     });
     return houseOrders;
   }
 
-  //通过房号查找房屋状态
   @GetMapping("sales/findAllByHouseId")
-  public HouseOrder findAllByHouseId(Integer houseId){
+  public HouseOrder findAllByHouseId(Integer houseId) {
     return houseOrderService.findAllByHouseId(houseId);
   }
 }

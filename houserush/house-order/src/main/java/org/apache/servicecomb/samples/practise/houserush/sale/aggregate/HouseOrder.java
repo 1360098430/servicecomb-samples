@@ -90,9 +90,4 @@ public class HouseOrder {
 
   @Transient
   private String phone;
-
-  public static void main(String[] args) {
-    String str = JSONObject.toJSONString(new HouseOrder(), SerializerFeature.WriteMapNullValue);
-    System.out.println(str);
-  }
 }
