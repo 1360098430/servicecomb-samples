@@ -63,29 +63,22 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     user.setUsername(customer.getRealName());
     user.setPassword("123456");
     User user1 = userApi.createUser(user);
-    //购房资格集合
     List<SaleQualification> saleQualifications = new ArrayList<>();
     List<Qualification> qualifications = customer.getQualifications();
-    qualifications.forEach(qualification->{
+    qualifications.forEach(qualification -> {
       Customer c1 = new Customer();
       c1.setId(user1.getId());
       qualification.setCustomer(c1);
-
       SaleQualification saleQualification = new SaleQualification();
-      saleQualification.setCustomerId(user1.getId());//客户id
-      saleQualification.setQualificationCount(20);//限制客户抢购次数默认20次
-      saleQualification.setSaleId(qualification.getSaleId());//活动id
+      saleQualification.setCustomerId(user1.getId());
+      saleQualification.setQualificationCount(20);
+      saleQualification.setSaleId(qualification.getSaleId());
       saleQualifications.add(saleQualification);
 
     });
     Customer customer1 = customerDao.save(customer);
-
-    //更新客户id
-    customerDao.updateCustomerIdUseUseId(user1.getId(),customer1.getId());
-
-    //数据同步到sale 表中去
+    customerDao.updateCustomerIdUseUseId(user1.getId(), customer1.getId());
     houseOrderApi.updateSaleQualification(saleQualifications);
-   //数据同步到sale 表中去
     return customer1;
   }
 
@@ -119,9 +112,9 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     customer.setQualifications(qualifications);
     qualifications.forEach(qualification -> qualification.setCustomer(customer));
     customerDao.saveAndFlush(customer);
-    Map<Integer,Long> map = qualifications.stream().collect(Collectors.groupingBy(Qualification::getSaleId,Collectors.counting()));
+    Map<Integer, Long> map = qualifications.stream().collect(Collectors.groupingBy(Qualification::getSaleId, Collectors.counting()));
     List<SaleQualification> saleQualifications = new ArrayList<>();
-    map.forEach((k,v)->saleQualifications.add(new SaleQualification(customer.getId(),k,v.intValue())));
+    map.forEach((k, v) -> saleQualifications.add(new SaleQualification(customer.getId(), k, v.intValue())));
     houseOrderApi.updateSaleQualification(saleQualifications);
     return true;
   }
