@@ -17,6 +17,7 @@
 
 package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -39,6 +40,7 @@ public class House {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "building_id")
   private Building building;

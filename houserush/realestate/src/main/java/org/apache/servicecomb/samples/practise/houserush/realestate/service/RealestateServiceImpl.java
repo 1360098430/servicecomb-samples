@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -44,9 +43,6 @@ public class RealestateServiceImpl implements RealestateService {
 
   @Autowired
   private HouseTypeDao houseTypeDao;
-
-  @Autowired
-  private TreeDao treeDao;
 
   @Override
   public Realestate createRealesate(Realestate realestate) {
@@ -202,14 +198,8 @@ public class RealestateServiceImpl implements RealestateService {
     return houseTypeDao.findAll();
   }
 
-  @Override
-  @Transactional
-  public org.apache.servicecomb.samples.practise.houserush.realestate.aggregate.tree.Realestate findTreeRealestate(Integer id) {
-    return treeDao.findOne(id);
-  }
   @Transactional
   public List<Building> findByRealestateId(Integer realestateId){
     return buildingDao.findByRealestateId(realestateId);
   }
-
 }

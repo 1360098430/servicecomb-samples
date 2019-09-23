@@ -17,7 +17,9 @@
 
 package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -43,13 +45,14 @@ public class Building {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "realestate_id")
   private Realestate realestate;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "building")
-  @Where(clause = "deleted_at is null ")
+  @JsonManagedReference
+  @OneToMany(mappedBy = "building",fetch= FetchType.EAGER)
+  @Where(clause = "deleted_at is null")
   private List<House> houses = new ArrayList<>();
 
   private String name;

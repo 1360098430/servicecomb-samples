@@ -27,7 +27,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.net.ssl.HostnameVerifier;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -180,15 +182,20 @@ public class RealestateApiRestImpl implements RealestateApi {
 
   @Override
   @GetMapping("/realestates/findTreeRealestate/{id}")
-  public Map<String, Object> findByRealestateId(@PathVariable("id") Integer id) {
-    org.apache.servicecomb.samples.practise.houserush.realestate.aggregate.tree.Realestate realestate = realestateService.findTreeRealestate(id);
-    Map map = new HashMap();
-    try {
-      ObjectMapper om = new ObjectMapper();
-      map.putAll(om.readValue(om.writeValueAsString(realestate), Map.class));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return map;
+  public Realestate findByRealestateId(@PathVariable("id") Integer id) {
+    Realestate realestate = realestateService.findRealestate(id);
+    List<Building>  buildings = realestateService.findByRealestateId(id);
+    realestate.setBuildings(buildings);
+    buildings.forEach(building -> {
+      List<House> houses =  building.getHouses();
+      Iterator it = houses.iterator();
+      while(it.hasNext()){
+        House house = (House)it.next();
+        if(!house.getState().equals("new")){
+          it.remove();
+        }
+      }
+    });
+    return realestate;
   }
 }

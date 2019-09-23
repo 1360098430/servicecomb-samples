@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
 # name of the declaring microservice
   name: customer-manage
-  version: 1.2.2
+  version: 1.2.3
 servicecomb:
   service:
     registry:

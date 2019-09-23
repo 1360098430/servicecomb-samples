@@ -72,5 +72,5 @@ public interface RealestateApi {
 
   byte[] findHouseTypeImage(int id);
 
-  public Map<String,Object>  findByRealestateId(Integer realestateId);
+  public Realestate findByRealestateId(Integer realestateId);
 }
