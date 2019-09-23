@@ -17,7 +17,6 @@
 
 package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
