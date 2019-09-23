@@ -44,7 +44,7 @@ public class Realestate {
   private int id;
 
  @JsonManagedReference
-  @OneToMany(mappedBy = "realestate",fetch= FetchType.EAGER)
+  @OneToMany(mappedBy = "realestate")
   private List<Building> buildings = new ArrayList<>();
 
   private String name;

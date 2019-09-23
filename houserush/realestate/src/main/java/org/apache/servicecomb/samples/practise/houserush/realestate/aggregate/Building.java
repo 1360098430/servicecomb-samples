@@ -51,7 +51,7 @@ public class Building {
   private Realestate realestate;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "building",fetch= FetchType.EAGER)
+  @OneToMany(mappedBy = "building")
   @Where(clause = "deleted_at is null")
   private List<House> houses = new ArrayList<>();
 

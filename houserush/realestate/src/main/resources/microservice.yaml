@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: realestate
-  version: 0.3.19
+  version: 0.3.35
 servicecomb:
   service:
     registry:
