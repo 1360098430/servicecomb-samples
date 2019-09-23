@@ -18,7 +18,6 @@
 package org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po;
 
 import lombok.Data;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -44,17 +43,17 @@ public class HouseDetail {
 
   private String state;
 
-  private String address;//地址
+  private String address;
 
-  private String type; //直接存在汉字 (住宅)
+  private String type;
 
-  private String avgprice;//均价
+  private String avgprice;
 
-  private String useyear;//产权年限
+  private String useyear;
 
-  private String  usernum ;//规划户数
+  private String  usernum ;
 
-  private String area;//占地面积
+  private String area;
 
-  private String buildname;//建筑类型
+  private String buildname;
 }
