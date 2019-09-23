@@ -43,7 +43,7 @@ public class Realestate {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
- @JsonManagedReference
+  @JsonManagedReference
   @OneToMany(mappedBy = "realestate")
   private List<Building> buildings = new ArrayList<>();
 
@@ -62,17 +62,17 @@ public class Realestate {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedAt;
 
- private String address;
+  private String address;
 
- private String type;
+  private String type;
 
- private String avgprice;
+  private String avgprice;
 
- private String useyear;
+  private String useyear;
 
- private String  usernum ;
+  private String usernum;
 
- private String area;
+  private String area;
 
- private String buildname;
+  private String buildname;
 }
