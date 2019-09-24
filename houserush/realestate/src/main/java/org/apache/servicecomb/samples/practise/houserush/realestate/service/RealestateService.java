@@ -68,4 +68,6 @@ public interface RealestateService {
   List<HouseType> indexHouseTypes();
 
   public List<Building> findByRealestateId(Integer realestateId);
+
+  public int updateReleaseLockingStatesForHouses(List<Integer> ids);
 }

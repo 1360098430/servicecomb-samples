@@ -18,6 +18,7 @@
 package org.apache.servicecomb.samples.practise.houserush.sale.service;
 
 import com.alibaba.fastjson.JSON;
+import io.swagger.models.auth.In;
 import org.apache.http.HttpStatus;
 import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.samples.practise.houserush.sale.aggregate.Favorite;
@@ -42,6 +43,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.PrinterGraphics;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -206,7 +208,20 @@ public class HouseOrderServiceImpl implements HouseOrderService {
 
   @Override
   public Sale createSale(Sale sale) {
-    return saleDao.save(sale);
+    List<HouseOrder> houseOrders = sale.getHouseOrders();
+    sale.setHouseOrders(null);
+    Sale saleTemp =saleDao.save(sale);
+    List<Integer> houseId = new ArrayList<>();
+    houseOrders.forEach(houseOrder -> {
+      Sale s = new Sale();
+      s.setId(saleTemp.getId());
+      houseOrder.setSale(s);
+      houseId.add(houseOrder.getHouseId());
+    });
+    List<HouseOrder> houseOrders1 = saveHousder(houseOrders);
+    saleTemp.setHouseOrders(houseOrders1);
+    realestateApi.lockHousesForSale(houseId);
+    return saleTemp;
   }
 
   @Override
@@ -273,7 +288,16 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   }
 
   @Override
+  @Transactional
   public void removeSale(int saleId) {
+    Sale sale  = findBackSale(saleId);
+    List<Integer> ids = new ArrayList<>();
+    sale.getHouseOrders().forEach(houseOrder->{
+      ids.add(houseOrder.getHouseId());
+    });
+    if(!ids.isEmpty()){
+      realestateApi.updateReleaseLockingStatesForHouses(ids);
+    }
     saleDao.delete(saleId);
   }
 

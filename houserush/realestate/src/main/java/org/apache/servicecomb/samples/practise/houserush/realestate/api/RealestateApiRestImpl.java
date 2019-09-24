@@ -125,6 +125,10 @@ public class RealestateApiRestImpl implements RealestateApi {
   public List<House> lockHousesForSale(@RequestBody List<Integer> ids) {
     return realestateService.lockHousesForSale(ids);
   }
+  @PutMapping("houses/releaseLockingStatesForHouses")
+  public int updateReleaseLockingStatesForHouses(@RequestBody List<Integer> ids){
+    return realestateService.updateReleaseLockingStatesForHouses(ids);
+  }
 
   @PostMapping("housetype")
   public HouseType createHouseType(@RequestBody HouseType houseType) {

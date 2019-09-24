@@ -28,4 +28,6 @@ public interface RealestateApi {
   House findHouse(int id);
 
   List<House> lockHousesForSale(List<Integer> ids);
+
+  public int updateReleaseLockingStatesForHouses(List<Integer> ids);
 }

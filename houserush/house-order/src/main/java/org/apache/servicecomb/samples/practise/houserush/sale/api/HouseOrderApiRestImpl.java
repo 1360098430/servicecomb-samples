@@ -72,20 +72,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @PostMapping("sales")
   public Sale createSale(@RequestBody Sale sale) {
-    List<HouseOrder> houseOrders = sale.getHouseOrders();
-    sale.setHouseOrders(null);
-    Sale saleTemp = houseOrderService.createSale(sale);
-    List<Integer> houseId = new ArrayList<>();
-    houseOrders.forEach(houseOrder -> {
-      Sale s = new Sale();
-      s.setId(saleTemp.getId());
-      houseOrder.setSale(s);
-      houseId.add(houseOrder.getHouseId());
-    });
-    List<HouseOrder> houseOrders1 = houseOrderService.saveHousder(houseOrders);
-    saleTemp.setHouseOrders(houseOrders1);
-    realestateApi.lockHousesForSale(houseId);
-    return saleTemp;
+    return houseOrderService.createSale(sale);
   }
 
   @Override
@@ -183,8 +170,6 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     List<Qualification> qualifications = customer.getQualifications();
     qualifications.forEach(qualification -> {
       Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
-      Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
-      sale.setRealestateName(realestate.getName());
       saleList.add(sale);
     });
     return saleList;
@@ -216,7 +201,6 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
           houseOrder.setHouseName(house.getName());
           houseOrder.setPrice(house.getPrice());
           houseOrder.setBuilDingName(house.getBuilding().getName());
-
         });
         saleList.add(sale);
       }

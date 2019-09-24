@@ -202,4 +202,9 @@ public class RealestateServiceImpl implements RealestateService {
   public List<Building> findByRealestateId(Integer realestateId){
     return buildingDao.findByRealestateId(realestateId);
   }
+
+  @Transactional
+  public int updateReleaseLockingStatesForHouses(List<Integer> ids){
+      return houseDao.updateReleaseLockingStatesForHouses(ids);
+  }
 }

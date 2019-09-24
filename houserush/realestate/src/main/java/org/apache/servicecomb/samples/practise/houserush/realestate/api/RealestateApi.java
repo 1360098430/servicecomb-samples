@@ -73,4 +73,6 @@ public interface RealestateApi {
   byte[] findHouseTypeImage(int id);
 
   public Realestate findByRealestateId(Integer realestateId);
+
+  public int updateReleaseLockingStatesForHouses(List<Integer> ids);
 }

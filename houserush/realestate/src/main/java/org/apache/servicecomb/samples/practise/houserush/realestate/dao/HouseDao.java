@@ -34,4 +34,8 @@ public interface HouseDao extends JpaRepository<House, Integer> {
   @Modifying
   @Query("UPDATE House h set h.state = 'locking' where h.id in (?1)")
   public int updateLockingStatesForHouses(List<Integer> ids);
+
+  @Modifying
+  @Query("UPDATE House h set h.state = 'new' where h.id in (?1)")
+  public int updateReleaseLockingStatesForHouses(List<Integer> ids);
 }
