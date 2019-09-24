@@ -158,10 +158,10 @@ public class HouseOrderServiceImpl implements HouseOrderService {
         houseOrder.setState("new");
         houseOrder.setOrderedAt(null);
         houseOrderDao.save(houseOrder);
-        //删除订单缓存中的状态
         redisUtil.hdel(""+redisKey.getSaleHashKey(houseOrder.getSale().getId()),houseOrderId+"");
-
-       // redisUtil.hdel(redisKey.getSaleHashKey(houseOrder.getSale().getId())+"",houseOrderId+"");
+        SaleQualification qualification = saleQualificationDao.findBySaleIdAndCustomerId(sale.getId(), customerId);
+        qualification.setOrderCount(0);
+        saleQualificationDao.saveAndFlush(qualification);
         return houseOrder;
       } else {
         throw new InvocationException(HttpStatus.SC_BAD_REQUEST, "", "cannot unoccupied the house which have not been occupied first by current customer first!");
