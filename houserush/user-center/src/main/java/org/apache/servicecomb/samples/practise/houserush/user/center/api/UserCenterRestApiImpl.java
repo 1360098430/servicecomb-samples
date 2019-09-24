@@ -19,7 +19,6 @@ package org.apache.servicecomb.samples.practise.houserush.user.center.api;
 
 import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
-import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.CustomerManageApi;
 import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.HouseOrderApi;
 import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.RealestateApi;
 import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po.*;
@@ -39,9 +38,6 @@ public class UserCenterRestApiImpl implements UserCenterApi {
 
   @RpcReference(microserviceName = "realestate", schemaId = "realestateApiRest")
   private RealestateApi realestateApi;
-
-  @RpcReference(microserviceName = "customer-manage", schemaId = "customerManageApiRest")
-  private CustomerManageApi customerManageApi;
 
   @Override
   @GetMapping("favorites")
