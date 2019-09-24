@@ -68,4 +68,6 @@ public interface HouseOrderService {
   public List<Favorite> findFavoriteAllByCustomerId(int customerId);
 
   public SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
+
+  public void removeSaleQualification(int customerId);
 }

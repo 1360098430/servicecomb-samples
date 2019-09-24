@@ -244,4 +244,14 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   public HouseOrder findAllByHouseId(Integer houseId) {
     return houseOrderService.findAllByHouseId(houseId);
   }
+
+  @GetMapping("sales/findBySaleIdAndCustomerId")
+  public SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId){
+    return houseOrderService.findBySaleIdAndCustomerId(saleId,customerId);
+  }
+
+  @DeleteMapping("sales/removeSaleQualification")
+  public void removeSaleQualification(int customerId){
+    houseOrderService.removeSaleQualification(customerId);
+  }
 }

@@ -83,10 +83,13 @@ public class CustomerManageServiceImpl implements CustomerManageService {
   }
 
   @Override
+  @Transactional
   public Customer updateCustomer(Customer customer) {
     int id = customer.getId();
     if (customerDao.exists(id)) {
-      return customerDao.save(customer);
+      houseOrderApi.removeSaleQualification(customer.getId());
+      updateCustomerQualifications(customer, customer.getQualifications());
+      return customer;
     } else {
       throw new DataRetrievalFailureException("cannot update the non-existed customer");
     }

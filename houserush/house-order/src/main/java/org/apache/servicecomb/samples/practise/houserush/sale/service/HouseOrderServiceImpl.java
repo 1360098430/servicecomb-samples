@@ -352,8 +352,13 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   public List<Favorite> findFavoriteAllByCustomerId(int customerId){
     return favoriteDao.findAllByCustomerId(customerId);
   }
-
+  @Transactional
   public SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId){
     return saleQualificationDao.findBySaleIdAndCustomerId(saleId,customerId);
+  }
+
+  @Transactional
+  public void removeSaleQualification(int customerId){
+     saleQualificationDao.deleteByCustomerId(customerId);
   }
 }

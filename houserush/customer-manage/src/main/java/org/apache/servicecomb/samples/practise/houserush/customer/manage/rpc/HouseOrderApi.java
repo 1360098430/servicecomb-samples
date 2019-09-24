@@ -25,4 +25,7 @@ public interface HouseOrderApi {
 
   void updateSaleQualification(List<SaleQualification> saleQualifications);
 
+  void removeSaleQualification(int customerId);
+
+  SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
 }

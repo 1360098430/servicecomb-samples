@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: edgeservice
-  version: 1.1.5
+  version: 2.1.6
 servicecomb:
   service:
     registry:
@@ -123,6 +123,7 @@ gateway:
     - GET /house-order/sales/order/{saleId}
     - GET /house-order/sales/findAllByCustomerId
     - GET /house-order/sales/findAllByHouseId
+    - GET /house-order/sales/findBySaleIdAndCustomerId
     - PUT /house-order/house_orders/{houseOrderId}/add_favorite
     - DELETE /house-order/favorites/{id}
     - PUT /house-order/house_orders/{houseOrderId}/cancel/{orderId}

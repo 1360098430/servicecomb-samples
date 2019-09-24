@@ -28,4 +28,6 @@ public interface SaleQualificationDao extends JpaRepository<SaleQualification, I
   //avoid user place houseOrders outnumber qualifications
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
+
+  void deleteByCustomerId(int customerId);
 }

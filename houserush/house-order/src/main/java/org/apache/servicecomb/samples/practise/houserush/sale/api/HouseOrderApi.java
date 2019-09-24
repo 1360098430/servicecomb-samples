@@ -60,4 +60,8 @@ public interface HouseOrderApi {
   public List<HouseOrder> findAllByCustomerId(int cucustomerId);
 
   public HouseOrder findAllByHouseId(Integer houseId);
+
+  public SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
+
+  public void removeSaleQualification(int customerId);
 }

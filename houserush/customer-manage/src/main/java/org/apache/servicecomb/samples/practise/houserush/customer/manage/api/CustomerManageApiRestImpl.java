@@ -50,6 +50,11 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
   @PutMapping("customers/{id}")
   public Customer updateCustomer(@PathVariable int id, @RequestBody Customer customer) {
     customer.setId(id);
+    customer.getQualifications().forEach(houseOrder->{
+      Customer c = new Customer();
+      c.setId(id);
+      houseOrder.setCustomer(c);
+    });
     return customerManageService.updateCustomer(customer);
   }
 
