@@ -160,7 +160,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
         houseOrderDao.save(houseOrder);
         redisUtil.hdel(""+redisKey.getSaleHashKey(houseOrder.getSale().getId()),houseOrderId+"");
         SaleQualification qualification = saleQualificationDao.findBySaleIdAndCustomerId(sale.getId(), customerId);
-        qualification.setOrderCount(0);
+        qualification.setOrderCount(qualification.getOrderCount()-1);
         saleQualificationDao.saveAndFlush(qualification);
         return houseOrder;
       } else {
