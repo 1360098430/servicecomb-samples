@@ -180,14 +180,19 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
       Sale sale = houseOrderService.findBackSale(saleQualification.getSaleId());
         List<HouseOrder> houseOrders = sale.getHouseOrders();
         houseOrders.forEach(houseOrder -> {
-          List<Favorite> favorites = houseOrderService.findFavoriteAllByCustomerId(customerId);
-          if (favorites != null) {
-            favorites.forEach(favorite -> {
-              if (favorite.getCustomerId() == customerId && favorite.getHouseOrderId() == houseOrder.getHouseId()) {
-                houseOrder.setFavorite("collect");// sate collect
-              }
-            });
+          try{
+            List<Favorite> favorites = houseOrderService.findFavoriteAllByCustomerId(customerId);
+            if (favorites != null) {
+              favorites.forEach(favorite -> {
+                if (favorite.getCustomerId() == customerId && favorite.getHouseOrderId() == houseOrder.getHouseId()) {
+                  houseOrder.setFavorite("collect");// sate collect
+                }
+              });
+            }
+          }catch (Exception e){
+            e.printStackTrace();
           }
+
           House house = realestateApi.findHouse(houseOrder.getHouseId());
           houseOrder.setHouseName(house.getName());
           houseOrder.setPrice(house.getPrice());
