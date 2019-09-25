@@ -96,6 +96,7 @@ public class CustomerManageServiceImpl implements CustomerManageService {
 
   @Override
   public void removeCustomer(int id) {
+    userApi.removeUser(id);
     customerDao.delete(id);
   }
 
