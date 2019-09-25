@@ -188,9 +188,7 @@ public class RealestateApiRestImpl implements RealestateApi {
   @GetMapping("/realestates/findTreeRealestate/{id}")
   public Realestate findByRealestateId(@PathVariable("id") Integer id) {
     Realestate realestate = realestateService.findRealestate(id);
-    List<Building>  buildings = realestateService.findByRealestateId(id);
-    realestate.setBuildings(buildings);
-    buildings.forEach(building -> {
+    realestate.getBuildings().forEach(building -> {
       List<House> houses =  building.getHouses();
       Iterator it = houses.iterator();
       while(it.hasNext()){
