@@ -70,4 +70,6 @@ public interface HouseOrderService {
   public SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
 
   public void removeSaleQualification(int customerId);
+
+  public List<SaleQualification> findByCustomerId(int customerId);
 }

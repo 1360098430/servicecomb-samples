@@ -18,10 +18,12 @@
 package org.apache.servicecomb.samples.practise.houserush.sale.dao;
 
 import org.apache.servicecomb.samples.practise.houserush.sale.aggregate.SaleQualification;
+import org.hibernate.hql.internal.ast.SqlASTFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.LockModeType;
+import java.util.List;
 
 public interface SaleQualificationDao extends JpaRepository<SaleQualification, Integer> {
 
@@ -30,4 +32,6 @@ public interface SaleQualificationDao extends JpaRepository<SaleQualification, I
   SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
 
   void deleteByCustomerId(int customerId);
+
+  List<SaleQualification> findByCustomerId(int customerId);
 }

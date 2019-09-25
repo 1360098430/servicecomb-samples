@@ -361,4 +361,8 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   public void removeSaleQualification(int customerId){
      saleQualificationDao.deleteByCustomerId(customerId);
   }
+
+  public List<SaleQualification> findByCustomerId(int customerId){
+    return saleQualificationDao.findByCustomerId(customerId);
+  }
 }

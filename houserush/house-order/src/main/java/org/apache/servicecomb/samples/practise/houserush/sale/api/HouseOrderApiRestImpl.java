@@ -17,6 +17,7 @@
 
 package org.apache.servicecomb.samples.practise.houserush.sale.api;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import org.apache.http.HttpStatus;
 import org.apache.servicecomb.provider.pojo.RpcReference;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
@@ -162,13 +163,9 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
 
   @GetMapping("sales/list")
   public List<Sale> indexListSales(@RequestHeader int customerId) {
+    List<SaleQualification> saleQualifications = houseOrderService.findByCustomerId(customerId);
     List<Sale> saleList = new ArrayList<>();
-    Customer customer = customerManageApi.findCustomer(customerId);
-    if (customer == null) {
-      return saleList;
-    }
-    List<Qualification> qualifications = customer.getQualifications();
-    qualifications.forEach(qualification -> {
+    saleQualifications.forEach(qualification->{
       Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
       saleList.add(sale);
     });
@@ -179,14 +176,8 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @GetMapping("sales/details/{saleId}")
   public List<Sale> indexDetailsSales(@RequestHeader int customerId, @PathVariable int saleId) {
     List<Sale> saleList = new ArrayList<>();
-    Customer customer = customerManageApi.findCustomer(customerId);
-    if (customer == null) {
-      return saleList;
-    }
-    List<Qualification> qualifications = customer.getQualifications();
-    qualifications.forEach(qualification -> {
-      Sale sale = houseOrderService.findBackSale(qualification.getSaleId());
-      if (sale.getId().equals(saleId)) {
+      SaleQualification saleQualification  = houseOrderService.findBySaleIdAndCustomerId(saleId,customerId);
+      Sale sale = houseOrderService.findBackSale(saleQualification.getSaleId());
         List<HouseOrder> houseOrders = sale.getHouseOrders();
         houseOrders.forEach(houseOrder -> {
           List<Favorite> favorites = houseOrderService.findFavoriteAllByCustomerId(customerId);
@@ -203,8 +194,6 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
           houseOrder.setBuilDingName(house.getBuilding().getName());
         });
         saleList.add(sale);
-      }
-    });
     return saleList;
   }
 
@@ -214,12 +203,17 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     saleList.forEach(sale -> {
       List<HouseOrder> houseOrders = sale.getHouseOrders();
       houseOrders.forEach(houseOrder -> {
-        Customer customer = customerManageApi.findCustomer(houseOrder.getCustomerId());
-        if (customer != null) {
-          houseOrder.setName(customer.getName());
-          houseOrder.setPhone(customer.getPhone());
+        Customer customer = new Customer();
+        try{
+           customer = customerManageApi.findCustomer(houseOrder.getCustomerId());
+          if (customer != null) {
+            houseOrder.setName(customer.getName());
+            houseOrder.setPhone(customer.getPhone());
+          }
+        }catch (Exception e){
+          houseOrder.setName("");
+          houseOrder.setPhone("");
         }
-
         House house = realestateApi.findHouse(houseOrder.getHouseId());
         Realestate realestate = realestateApi.findRealestate(sale.getRealestateId());
         houseOrder.setRealestateName(realestate.getName());
