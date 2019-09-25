@@ -142,6 +142,10 @@ public class RealestateServiceImpl implements RealestateService {
 
   @Override
   public void removeHouse(Integer id) {
+    House house =  houseDao.findOne(id);
+    if(house.getState().equals("locking")){
+      throw new DataRetrievalFailureException("cannot delete house");
+    }
     houseDao.delete(id);
   }
 

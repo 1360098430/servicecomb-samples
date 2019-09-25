@@ -17,6 +17,8 @@
 
 package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
@@ -42,7 +44,8 @@ public class Realestate {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @JsonManagedReference
+  //@JsonManagedReference
+  @JsonIgnoreProperties(ignoreUnknown = true, value = {"realestate"})
   @OneToMany(mappedBy = "realestate")
   private List<Building> buildings = new ArrayList<>();
 

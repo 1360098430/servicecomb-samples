@@ -18,7 +18,10 @@
 package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,12 +38,14 @@ import java.util.Date;
 @SQLDelete(sql = "update houses set deleted_at = now() where id = ?")
 @Where(clause = "deleted_at is null")
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class House {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @JsonBackReference
+  //@JsonBackReference
+  //@JsonIgnore (fetch = FetchType.EAGER)
   @ManyToOne
   @JoinColumn(name = "building_id")
   private Building building;

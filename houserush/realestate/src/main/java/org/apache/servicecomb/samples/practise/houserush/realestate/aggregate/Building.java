@@ -19,6 +19,7 @@ package org.apache.servicecomb.samples.practise.houserush.realestate.aggregate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,18 +40,21 @@ import java.util.List;
 @Table(name = "buildings")
 @SQLDelete(sql = "update buildings set deleted_at = now() where id = ?")
 @Where(clause = "deleted_at is null")
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 @EntityListeners(AuditingEntityListener.class)
 public class Building {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @JsonBackReference
+  //@JsonBackReference
   @ManyToOne
   @JoinColumn(name = "realestate_id")
   private Realestate realestate;
 
-  @JsonManagedReference
+  //@JsonManagedReference
+  //@JsonIgnore
+  @JsonIgnoreProperties(ignoreUnknown = true, value = {"building"})
   @OneToMany(mappedBy = "building")
   @Where(clause = "deleted_at is null")
   private List<House> houses = new ArrayList<>();
