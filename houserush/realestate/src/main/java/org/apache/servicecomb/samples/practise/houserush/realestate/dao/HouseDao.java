@@ -28,7 +28,7 @@ import java.util.List;
 
 public interface HouseDao extends JpaRepository<House, Integer> {
   @Lock(LockModeType.PESSIMISTIC_WRITE)
-  @Query("SELECT h FROM org.apache.servicecomb.samples.practise.houserush.realestate.aggregate.House h WHERE h.id in (?1)")
+  @Query("SELECT h FROM House h WHERE h.id in (?1)")
   List<House> findAllByIdInForUpdate(List<Integer> ids);
 
   @Modifying
