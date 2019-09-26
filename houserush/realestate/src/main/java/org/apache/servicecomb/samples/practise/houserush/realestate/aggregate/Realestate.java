@@ -43,8 +43,7 @@ public class Realestate {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
-
-  //@JsonManagedReference
+  
   @JsonIgnoreProperties(ignoreUnknown = true, value = {"realestate"})
   @OneToMany(mappedBy = "realestate")
   private List<Building> buildings = new ArrayList<>();
