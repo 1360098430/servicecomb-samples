@@ -38,14 +38,11 @@ import java.util.Date;
 @SQLDelete(sql = "update houses set deleted_at = now() where id = ?")
 @Where(clause = "deleted_at is null")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class House {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  //@JsonBackReference
-  //@JsonIgnore (fetch = FetchType.EAGER)
   @ManyToOne
   @JoinColumn(name = "building_id")
   private Building building;

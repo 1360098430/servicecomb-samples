@@ -44,14 +44,12 @@ public class UserCenterRestApiImpl implements UserCenterApi {
   public List<Favorite> findMyFavorite(@RequestHeader int customerId) {
     List<Favorite> favorites =  houseOrderApi.findMyFavorite(customerId);
     favorites.forEach(favorite -> {
-      HouseOrder HouseOrder = houseOrderApi.findOne(favorite.getHouseOrderId());
-      House house = realestateApi.findHouse(HouseOrder.getHouseId());
+      HouseOrder houseOrder = houseOrderApi.findOne(favorite.getHouseOrderId());
+      House house = realestateApi.findHouse(houseOrder.getHouseId());
       favorite.setHouseName(house.getName());
       favorite.setPrice(house.getPrice());
       favorite.setBuilDingName(house.getBuilding().getName());
       favorite.setRealestateName(house.getBuilding().getRealestate().getName());
-      Sale sale = houseOrderApi.findSaleByRealestateId(house.getBuilding().getRealestate().getId());
-      HouseOrder houseOrder = houseOrderApi.findAllByHouseId(HouseOrder.getHouseId());
       favorite.setState(houseOrder.getState());
       favorite.setHouseOrderId(house.getId());
     });

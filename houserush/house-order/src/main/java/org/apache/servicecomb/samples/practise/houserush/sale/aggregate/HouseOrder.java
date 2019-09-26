@@ -44,7 +44,6 @@ public class HouseOrder {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
-  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "sale_id")
   private Sale sale;

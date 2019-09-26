@@ -17,6 +17,7 @@
 
 package org.apache.servicecomb.samples.practise.houserush.sale.aggregate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -54,6 +55,7 @@ public class Sale {
 
   @OneToMany(mappedBy = "sale")
   @Fetch(FetchMode.JOIN)
+  @JsonIgnoreProperties(ignoreUnknown = true, value = {"sale"})
   private List<HouseOrder> houseOrders = new ArrayList<>();
 
   private Integer realestateId;

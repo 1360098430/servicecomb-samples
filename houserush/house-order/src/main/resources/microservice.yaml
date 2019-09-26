@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: house-order
-  version: 5.0.3
+  version: 5.1.1
 #  environment: development
 servicecomb:
   service:

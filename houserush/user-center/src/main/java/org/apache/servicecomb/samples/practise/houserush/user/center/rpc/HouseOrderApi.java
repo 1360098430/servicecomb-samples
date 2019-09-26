@@ -4,6 +4,7 @@ import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po.Favo
 import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po.HouseOrder;
 import org.apache.servicecomb.samples.practise.houserush.user.center.rpc.po.Sale;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface HouseOrderApi {
   public List<HouseOrder> findAllByCustomerId(@RequestHeader int cucustomerId);
 
   public HouseOrder findAllByHouseId(Integer houseId);
+
+  Sale findSale(int saleId);
 }
