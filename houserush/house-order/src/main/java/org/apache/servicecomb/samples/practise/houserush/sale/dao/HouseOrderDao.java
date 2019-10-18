@@ -45,4 +45,6 @@ public interface HouseOrderDao extends JpaRepository<HouseOrder, Integer> {
   List<HouseOrder> findAllByCustomerId(int cucustomerId);
 
   public HouseOrder findAllByHouseId(Integer houseId);
+
+  int countBySaleId(int saleId);
 }
