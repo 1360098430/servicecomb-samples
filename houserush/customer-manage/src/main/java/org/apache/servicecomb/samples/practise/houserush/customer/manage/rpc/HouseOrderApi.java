@@ -29,5 +29,5 @@ public interface HouseOrderApi {
 
   SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
 
-  int countBySaleId(int saleId);
+  int countHouseBySaleId(int saleId);
 }
