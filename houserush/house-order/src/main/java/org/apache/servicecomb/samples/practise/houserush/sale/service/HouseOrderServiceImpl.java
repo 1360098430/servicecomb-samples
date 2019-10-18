@@ -365,4 +365,9 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   public List<SaleQualification> findByCustomerId(int customerId){
     return saleQualificationDao.findByCustomerId(customerId);
   }
+
+  @Override
+  public int countBySaleId(int saleId) {
+    return houseOrderDao.countBySaleId(saleId);
+  }
 }

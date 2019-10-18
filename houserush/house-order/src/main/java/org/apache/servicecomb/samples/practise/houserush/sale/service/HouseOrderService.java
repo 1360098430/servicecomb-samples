@@ -72,4 +72,6 @@ public interface HouseOrderService {
   public void removeSaleQualification(int customerId);
 
   public List<SaleQualification> findByCustomerId(int customerId);
+
+  int countBySaleId(int saleId);
 }
