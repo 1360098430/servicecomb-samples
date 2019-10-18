@@ -65,7 +65,7 @@ public class CustomerManageServiceImpl implements CustomerManageService {
       qualification.setCustomer(customerInfo);
       SaleQualification saleQualification = new SaleQualification();
       saleQualification.setCustomerId(createUser.getId());
-      int saleHouseNum = houseOrderApi.countBySaleId(qualification.getSaleId());
+      int saleHouseNum = houseOrderApi.countHouseBySaleId(qualification.getSaleId());
       saleQualification.setQualificationCount(saleHouseNum);
       saleQualification.setSaleId(qualification.getSaleId());
       saleQualifications.add(saleQualification);
@@ -112,7 +112,7 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     customerDao.saveAndFlush(customer);
     List<SaleQualification> saleQualifications = new ArrayList<>();
     qualifications.forEach(qualification -> {
-      int saleHouseNum = houseOrderApi.countBySaleId(qualification.getSaleId());
+      int saleHouseNum = houseOrderApi.countHouseBySaleId(qualification.getSaleId());
       SaleQualification saleQualification =  new SaleQualification(customer.getId(),qualification.getSaleId(), saleHouseNum);
       saleQualifications.add(saleQualification);
     });
