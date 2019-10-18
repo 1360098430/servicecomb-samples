@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: edgeservice
-  version: 2.1.6
+  version: 2.1.7
 servicecomb:
   service:
     registry:
@@ -42,13 +42,12 @@ servicecomb:
   handler:
     chain:
       Consumer:
-        default: auth,loadbalance
-        #,tracing-consumer
-      #Provider:
-      #  default: tracing-provider
- # tracing:
- #   collector:
- #     address: http://192.168.229.184:9411
+        default: auth,loadbalance,tracing-consumer
+      Provider:
+        default: tracing-provider,tracing-provider
+  tracing:
+    collector:
+      address: http://192.168.229.184:9411
 
   inspector:
     enabled: false
@@ -128,6 +127,7 @@ gateway:
     - DELETE /house-order/favorites/{id}
     - PUT /house-order/house_orders/{houseOrderId}/cancel/{orderId}
     - PUT /realestate/houses/releaseLockingStatesForHouses
+    - GET /house-order/sales/countBySaleId/{saleId}
 
   noNeedLoginUrls:
     - POST /login/users
