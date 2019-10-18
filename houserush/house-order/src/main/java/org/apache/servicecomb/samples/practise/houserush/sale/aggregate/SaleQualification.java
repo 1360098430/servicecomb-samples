@@ -45,4 +45,5 @@ public class SaleQualification {
     orderCount++;
   }
 
+  public void minusOrderCount(){ orderCount--; }
 }
