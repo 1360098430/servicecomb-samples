@@ -160,7 +160,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
         houseOrderDao.save(houseOrder);
         redisUtil.hdel(""+redisKey.getSaleHashKey(houseOrder.getSale().getId()),houseOrderId+"");
         SaleQualification qualification = saleQualificationDao.findBySaleIdAndCustomerId(sale.getId(), customerId);
-        qualification.setOrderCount(qualification.getOrderCount()-1);
+        qualification.minusOrderCount(); //qualification.minusOrderCount();qualification.setOrderCount(qualification.getOrderCount()-1);
         saleQualificationDao.saveAndFlush(qualification);
         return houseOrder;
       } else {
@@ -194,11 +194,6 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   @Override
   public Favorite findFavorite(int id) {
     return favoriteDao.findOne(id);
-  }
-
-  @Override
-  public List<Favorite> findMyFavorite(int customerId) {
-    return favoriteDao.findAllByCustomerId(customerId);
   }
 
   @Override
@@ -367,7 +362,7 @@ public class HouseOrderServiceImpl implements HouseOrderService {
   }
 
   @Override
-  public int countBySaleId(int saleId) {
+  public int countHouseBySaleId(int saleId) {
     return houseOrderDao.countBySaleId(saleId);
   }
 }

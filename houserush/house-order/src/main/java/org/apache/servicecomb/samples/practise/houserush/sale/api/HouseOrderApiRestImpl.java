@@ -111,7 +111,7 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   @Override
   @GetMapping("favorites")
   public List<Favorite> findMyFavorite(@RequestHeader int customerId) {
-    return houseOrderService.findMyFavorite(customerId);
+    return houseOrderService.findFavoriteAllByCustomerId(customerId);
   }
 
   @Override
@@ -254,9 +254,9 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
     houseOrderService.removeSaleQualification(customerId);
   }
 
-  @GetMapping("sales/countBySaleId/{saleId}")
+  @GetMapping("sales/countHouseBySaleId/{saleId}")
   @Override
-  public int countBySaleId(@PathVariable int saleId) {
-    return houseOrderService.countBySaleId(saleId);
+  public int countHouseBySaleId(@PathVariable int saleId) {
+    return houseOrderService.countHouseBySaleId(saleId);
   }
 }

@@ -65,5 +65,5 @@ public interface HouseOrderApi {
 
   public void removeSaleQualification(int customerId);
 
-  public int countBySaleId(int saleId);
+  public int countHouseBySaleId(int saleId);
 }

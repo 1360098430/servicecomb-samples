@@ -39,8 +39,6 @@ public interface HouseOrderService {
 
   Favorite findFavorite(int id);
 
-  List<Favorite> findMyFavorite(int customerId);
-
   void removeFavorite(int id);
 
   Sale createSale(Sale sale);
@@ -73,5 +71,5 @@ public interface HouseOrderService {
 
   public List<SaleQualification> findByCustomerId(int customerId);
 
-  int countBySaleId(int saleId);
+  int countHouseBySaleId(int saleId);
 }
