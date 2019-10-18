@@ -253,4 +253,10 @@ public class HouseOrderApiRestImpl implements HouseOrderApi {
   public void removeSaleQualification(int customerId){
     houseOrderService.removeSaleQualification(customerId);
   }
+
+  @GetMapping("sales/countBySaleId/{saleId}")
+  @Override
+  public int countBySaleId(@PathVariable int saleId) {
+    return houseOrderService.countBySaleId(saleId);
+  }
 }
