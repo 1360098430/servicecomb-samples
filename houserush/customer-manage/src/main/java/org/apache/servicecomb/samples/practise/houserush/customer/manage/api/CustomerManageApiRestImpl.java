@@ -77,9 +77,4 @@ public class CustomerManageApiRestImpl implements CustomerManageApi {
     return customer;
   }
 
-  @GetMapping("customers/{customerId}/sales/{saleId}/qulification_count")
-  public int getQualificationsCount(@PathVariable int customerId, @PathVariable int saleId) {
-    return customerManageService.getQualificationsCount(customerId, saleId);
-
-  }
 }

@@ -119,10 +119,4 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     houseOrderApi.updateSaleQualification(saleQualifications);
     return true;
   }
-
-  @Override
-  public int getQualificationsCount(int customerId, int saleId) {
-    return qualificationDao.countByCustomerIdAndSaleId(customerId, saleId);
-  }
-
 }

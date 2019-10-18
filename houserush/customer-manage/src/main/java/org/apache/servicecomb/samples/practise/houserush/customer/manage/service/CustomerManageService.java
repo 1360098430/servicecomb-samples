@@ -34,6 +34,4 @@ public interface CustomerManageService {
   List<Customer> indexCustomers();
 
   boolean updateCustomerQualifications(Customer customer, List<Qualification> qualifications);
-
-  int getQualificationsCount(int customerId, int saleId);
 }
