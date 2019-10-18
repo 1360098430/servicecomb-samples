@@ -19,12 +19,6 @@ package org.apache.servicecomb.samples.practise.houserush.customer.manage.dao;
 
 import org.apache.servicecomb.samples.practise.houserush.customer.manage.aggregate.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 public interface CustomerDao extends JpaRepository<Customer, Integer>{
-
-  @Modifying
-  @Query("UPDATE Customer set  id=(?1) where id= (?2)")
-  public void updateCustomerIdUseUseId(int userId,int cid);
 }

@@ -28,4 +28,6 @@ public interface HouseOrderApi {
   void removeSaleQualification(int customerId);
 
   SaleQualification findBySaleIdAndCustomerId(int saleId, int customerId);
+
+  int countBySaleId(int saleId);
 }
