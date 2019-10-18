@@ -56,22 +56,22 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     User user = new User();
     user.setUsername(customer.getRealName());
     user.setPassword("123456");
-    User user1 = userApi.createUser(user);
+    User createUser = userApi.createUser(user);
     List<SaleQualification> saleQualifications = new ArrayList<>();
     List<Qualification> qualifications = customer.getQualifications();
     qualifications.forEach(qualification -> {
-      Customer c1 = new Customer();
-      c1.setId(user1.getId());
-      qualification.setCustomer(c1);
+      Customer customerInfo = new Customer();
+      customerInfo.setId(createUser.getId());
+      qualification.setCustomer(customerInfo);
       SaleQualification saleQualification = new SaleQualification();
-      saleQualification.setCustomerId(user1.getId());
-      saleQualification.setQualificationCount(20);
+      saleQualification.setCustomerId(createUser.getId());
+      int saleHouseNum = houseOrderApi.countBySaleId(qualification.getSaleId());
+      saleQualification.setQualificationCount(saleHouseNum);
       saleQualification.setSaleId(qualification.getSaleId());
       saleQualifications.add(saleQualification);
-
     });
+    customer.setId(createUser.getId());
     Customer customer1 = customerDao.save(customer);
-    customerDao.updateCustomerIdUseUseId(user1.getId(), customer1.getId());
     houseOrderApi.updateSaleQualification(saleQualifications);
     return customer1;
   }
@@ -110,9 +110,12 @@ public class CustomerManageServiceImpl implements CustomerManageService {
     customer.setQualifications(qualifications);
     qualifications.forEach(qualification -> qualification.setCustomer(customer));
     customerDao.saveAndFlush(customer);
-    Map<Integer, Long> map = qualifications.stream().collect(Collectors.groupingBy(Qualification::getSaleId, Collectors.counting()));
     List<SaleQualification> saleQualifications = new ArrayList<>();
-    map.forEach((k, v) -> saleQualifications.add(new SaleQualification(customer.getId(), k, v.intValue())));
+    qualifications.forEach(qualification -> {
+      int saleHouseNum = houseOrderApi.countBySaleId(qualification.getSaleId());
+      SaleQualification saleQualification =  new SaleQualification(customer.getId(),qualification.getSaleId(), saleHouseNum);
+      saleQualifications.add(saleQualification);
+    });
     houseOrderApi.updateSaleQualification(saleQualifications);
     return true;
   }
