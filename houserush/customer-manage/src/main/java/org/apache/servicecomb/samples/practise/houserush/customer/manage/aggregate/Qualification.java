@@ -42,6 +42,7 @@ public class Qualification {
 
   private Integer saleId;
 
+  @Transient
   private Integer houseId;
 
   @CreatedDate

@@ -38,7 +38,6 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
   @Id
- @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   private String phone;
