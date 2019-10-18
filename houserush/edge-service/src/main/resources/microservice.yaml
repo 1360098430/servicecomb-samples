@@ -127,7 +127,7 @@ gateway:
     - DELETE /house-order/favorites/{id}
     - PUT /house-order/house_orders/{houseOrderId}/cancel/{orderId}
     - PUT /realestate/houses/releaseLockingStatesForHouses
-    - GET /house-order/sales/countBySaleId/{saleId}
+    - GET /house-order/sales/countHouseBySaleId/{saleId}
 
   noNeedLoginUrls:
     - POST /login/users
