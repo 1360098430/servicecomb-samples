@@ -115,6 +115,7 @@ gateway:
     - GET /user-center/buyHouseOrderState
     - GET /house-order/sales/details/{saleId}
     - GET /house-order/sales/list
+    - GET /house-order/favorites
     - GET /login/users/findUser
     - GET /realestate/realestates/findTreeRealestate/{id}
     - GET /house-order/sales/indexAllSales
