@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.List;
 
 public interface HouseOrderApi {
+  List<Favorite> findFavoriteAllByCustomerId(int customerId);
+
   List<Favorite> findMyFavorite(int customerId);
 
   Sale findSaleByRealestateId(int realestateId);
