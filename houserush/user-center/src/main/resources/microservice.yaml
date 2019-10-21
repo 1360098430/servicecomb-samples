@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
 # name of the declaring microservice
   name: user-center
-  version: 3.2.22
+  version: 3.2.35
 servicecomb:
   service:
     registry:
@@ -32,3 +32,6 @@ servicecomb:
     chain:
       Provider:
         default: bizkeeper-provider
+  tracing:
+    collector:
+      address: http://192.168.229.184:9411
