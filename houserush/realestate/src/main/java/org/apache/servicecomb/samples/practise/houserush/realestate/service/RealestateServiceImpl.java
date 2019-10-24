@@ -67,6 +67,10 @@ public class RealestateServiceImpl implements RealestateService {
 
   @Override
   public void removeRealestate(Integer id) {
+    List<String> houseSate =houseDao.findByRealestateHouseState(id);
+    if(houseSate != null && houseSate.size()>0){
+      throw new DataRetrievalFailureException("cannot remove realestate, some house for sale");
+    }
     realestateDao.delete(id);
   }
 
