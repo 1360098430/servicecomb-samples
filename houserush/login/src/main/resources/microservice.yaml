@@ -31,15 +31,16 @@ servicecomb:
   handler:
     chain:
       Provider:
-        default: bizkeeper-provider
-      Consumer:
-        default: tracing-consumer
-#  tracing:
-#    collector:
-#      address: http://192.168.229.184:9411
+        default: bizkeeper-provider,tracing-provider
+#      Consumer:
+#        default: tracing-consumer
+  tracing:
+    collector:
+      address: http://192.168.229.184:9411
 spring:
   datasource:
-    url: jdbc:mysql://172.17.0.128:3306/login?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://192.168.229.184:3306/houserush_login?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
     type: org.apache.tomcat.jdbc.pool.DataSource

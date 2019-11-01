@@ -21,7 +21,7 @@ APPLICATION_ID: houserush
 service_description:
   # name of the declaring microservice
   name: realestate
-  version: 0.3.56
+  version: 0.3.68
 servicecomb:
   service:
     registry:
@@ -31,12 +31,12 @@ servicecomb:
   handler:
     chain:
       Provider:
-        default: bizkeeper-provider
- #     Consumer:
- #       default: tracing-consumer
- # tracing:
- #   collector:
- #     address: http://192.168.229.184:9411
+        default: bizkeeper-provider,tracing-provider
+#      Consumer:
+#        default: tracing-consumer
+  tracing:
+    collector:
+      address: http://192.168.229.184:9411
   uploads:
     directory: /tmp
 
@@ -46,7 +46,8 @@ spring:
       max-request-size: 10M
       max-file-size: 1M
   datasource:
-    url: jdbc:mysql://172.17.0.128:3306/realestate?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://192.168.229.184:3306/houserush_realestate?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
 #    type: org.apache.tomcat.jdbc.pool.DataSource
@@ -60,6 +61,6 @@ spring:
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true

@@ -32,7 +32,9 @@
     <module>house-order</module>
     <module>user-center</module>
     <module>edge-service</module>
+<!--
     <module>gateway</module>
+-->
     <module>doc</module>
   </modules>
 

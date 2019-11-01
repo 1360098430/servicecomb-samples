@@ -19,12 +19,14 @@ package org.apache.servicecomb.samples.practise.houserush.user.center;
 
 import org.apache.servicecomb.common.rest.codec.RestObjectMapperFactory;
 import org.apache.servicecomb.springboot.starter.provider.EnableServiceComb;
+import org.apache.servicecomb.tracing.zipkin.EnableZipkinTracing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+@EnableZipkinTracing
 @SpringBootApplication
 @EnableServiceComb
 public class UserCenterApplication {

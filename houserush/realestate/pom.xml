@@ -62,6 +62,10 @@
       <artifactId>spring-jdbc</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.servicecomb</groupId>
+      <artifactId>tracing-zipkin</artifactId>
+    </dependency>
   </dependencies>
   <!--<dependencies>
     <dependency>
